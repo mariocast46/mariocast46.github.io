@@ -106,5 +106,9 @@
     "info2":{
 
     }
+  },
+  "footer":{
+    "derechos":"© All Right Reserved.",
+    "developer":"FRONT-END DEVELOPER"
   }
 }

@@ -95,5 +95,9 @@
   "line2" : "GRAN COLABORACIÓN",
   "thanks": "Gracias!",
   "respuesta":"Te respondo muy pronto."
+  },
+  "footer":{
+    "derechos":"© Todo derecho reservado.",
+    "developer":"FRONT-END DEVELOPER"
   }
 }

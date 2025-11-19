@@ -2,6 +2,7 @@
 import s from "./footer.module.css";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useT } from "../../app/providers/DictProvider";
 
 export default function Footer({
   name = "MARIO CAST",
@@ -12,7 +13,7 @@ export default function Footer({
   year  = new Date().getFullYear(),
 }) {
     const [timeES, setTimeES] = useState("");
-
+    const t = useT();
   useEffect(() => {
     const fmt = new Intl.DateTimeFormat("es-ES", {
       timeZone: "Europe/Madrid",     // UTC+1 (o +2 en verano)
@@ -58,9 +59,9 @@ function asLinkProps(id) {
       {/* fila superior: nav izquierda + contacto derecha */}
       <div className={s.top}>
         <nav className={s.nav} aria-label="Footer">
-          <a {...asLinkProps("about")}   className={s.navItem}>ABOUT ME</a>
-          <a {...asLinkProps("works")} className={s.navItem}>WORKS</a>
-          <a {...asLinkProps("contact")}    className={s.navItem}>CONTACT</a>
+          <a {...asLinkProps("about")}   className={s.navItem}>{t("nav.about")}</a>
+          <a {...asLinkProps("works")} className={s.navItem}>={t("nav.works")}</a>
+          <a {...asLinkProps("contact")}    className={s.navItem}>={t("nav.contact")}</a>
         </nav>
 
         <div className={s.contactBlock}>
@@ -93,8 +94,8 @@ function asLinkProps(id) {
         <div className={s.metaLeft}>
           {city}: {timeES}{tz}<span className={s.clock} aria-live="polite"></span>
         </div>
-        <div className={s.metaCenter}>DEVELOPMENT – MM</div>
-        <div className={s.metaRight}>© All Right Reserved. {year} {name.replace(/\s+/g, "")}</div>
+        <div className={s.metaCenter}>{t("footer.developer")}</div>
+        <div className={s.metaRight}>{t("footer.derechos")} {year} {name.replace(/\s+/g, "")}</div>
       </div>
     </footer>
   );
