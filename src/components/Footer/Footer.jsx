@@ -60,8 +60,8 @@ function asLinkProps(id) {
       <div className={s.top}>
         <nav className={s.nav} aria-label="Footer">
           <a {...asLinkProps("about")}   className={s.navItem}>{t("nav.about")}</a>
-          <a {...asLinkProps("works")} className={s.navItem}>={t("nav.works")}</a>
-          <a {...asLinkProps("contact")}    className={s.navItem}>={t("nav.contact")}</a>
+          <a {...asLinkProps("works")} className={s.navItem}>{t("nav.works")}</a>
+          <a {...asLinkProps("contact")}    className={s.navItem}>{t("nav.contact")}</a>
         </nav>
 
         <div className={s.contactBlock}>
