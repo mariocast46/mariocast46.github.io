@@ -1,0 +1,181 @@
+.wrap{
+  max-width: min(1400px, 92vw);
+  margin: clamp(40px, 10vw, 120px) auto;
+  justify-content: center;
+  z-index: 50;
+}
+
+/* Enlace como tarjeta, pero el layout lo lleva .inner */
+.card{
+  display: block;
+  position: relative;
+  text-decoration: none;
+  align-items: center;
+  cursor: pointer;
+}
+
+.inner{
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* sin columna para el gif */
+  align-items: center;
+  gap: clamp(12px, 3vw, 28px);
+  padding: clamp(18px, 3.6vw, 36px) clamp(18px, 4vw, 44px);
+  background:#101010;
+  overflow: hidden;
+  border-color: transparent;
+}
+
+.txt, .txtRight{
+  font-family: var(--font-display, system-ui);
+  font-weight: 800;
+  line-height: 1.02;
+  color: #ffffff;
+  font-size: clamp(28px, 6vw, 72px);
+  white-space: nowrap;
+}
+
+.txtRight{
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: .6ch;
+}
+
+.arrow{
+  width: 1em; height: 1em;
+  transform: translateY(2px);
+  transition: transform .25s ease;
+}
+
+.inner:hover .arrow{ transform: translate(3px, -3px); }
+
+/* Fila de texto en una sola línea */
+.txtRow{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(160px, 1vw, 80px);
+  white-space: nowrap;
+  width: 100%;
+  z-index: 2;
+}
+
+/* El GIF ocupa un hueco en la línea (ajústalo con --gif-w) */
+.gifSlot{
+  position: relative;
+  display: inline-block;
+  width: var(--gif-w, clamp(60px, 14vw, 110px)); /* ← ajuste principal */
+  height: 1em;     /* reserva altura de línea (el gif puede sobresalir) */
+  line-height: 1;  /* limpia alturas extra */
+  vertical-align: baseline;
+  overflow: visible;
+}
+
+/* El GIF se pinta encima del hueco, centrado */
+.gifWrap{
+  position: absolute;
+  transform: translate(calc(-50% + 4px), calc(-50% + 8px));
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  pointer-events: none; 
+  overflow: hidden;
+}
+
+/* Responsive: reduce el hueco si hace falta */
+@media (max-width: 860px){
+  .inner{ grid-template-columns: 1fr; gap: 12px; text-align: center; }
+  .txtRight{ justify-self: center; }
+  .gifSlot{ --gif-w: clamp(90px, 24vw, 160px); }
+}
+
+/* Fila: necesitamos un contexto para posicionar y z-index */
+.txtRow{
+  position: relative;               /* ← contexto */
+  display: inline-flex;
+  align-items: baseline;            /* alinea con el texto */
+  gap: .6ch;
+  white-space: nowrap;
+  width: 100%;
+  z-index: 1;                       /* texto debajo del GIF */
+}
+
+/* El slot SOLO reserva ancho; NO altura (no deforma la línea) */
+.gifSlot{
+  position: relative;
+  display: inline-block;
+  width: var(--gif-w, 140px);       /* controla el ancho del GIF */
+  height: 0;                        /* ← clave: no suma altura de línea */
+  vertical-align: baseline;
+  overflow: visible;                /* el GIF puede sobresalir */
+}
+
+/* El GIF va ABSOLUTO centrado sobre el slot y por encima del texto */
+.gifWrap{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -62%); /* ajusta -62% si lo quieres un pelín más alto */
+  width: var(--gif-w, 140px);       /* mismo ancho que el slot */
+  z-index: 5;                       /* por encima del texto */
+  display: grid;
+  place-items: center;
+  pointer-events: none;             /* que no bloquee el click del link */
+  overflow: hidden;
+}
+
+/* El GIF rellena el wrap (dejamos que CSS mande el tamaño) */
+.gif{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Puedes fijar un ancho por defecto del GIF aquí */
+.inner{ --gif-w: clamp(90px, 14vw, 160px); }
+
+@media (max-width: 860px){
+  .inner{ grid-template-columns: 1fr; gap: 12px; text-align: center; }
+  .txtRight{ justify-self: center; }
+  .inner{ --gif-w: clamp(80px, 22vw, 140px); }
+}
+
+/* === Centrados globales de la CTA === */
+.wrap{
+  display: flex;
+  justify-content: center;      /* centra el contenido dentro del ancho máximo */
+}
+
+.card{
+  display: block;               /* no cambia, sólo explícito */
+}
+
+/* Centramos el contenido real: la fila con el texto */
+.inner{
+  /* En lugar de grid 1fr 1fr, usamos flex centrado */
+  display: flex;
+  justify-content: center;      /* <-- centra horizontalmente TODO */
+  align-items: baseline;        /* alinea la línea base del texto */
+  text-align: center;           /* por si hay saltos en móvil */
+  gap: clamp(12px, 3vw, 28px);  /* conserva tu separación */
+  /* (mantén tus paddings, fondo y overflow) */
+}
+
+/* La fila ya iba centrada, pero lo reforzamos por si acaso */
+.txtRow{
+  margin-inline: auto;          /* asegura centrado si se usa ancho intrínseco */
+  justify-content: center;      /* centra internamente las dos mitades + GIF */
+  gap: clamp(2ch, 6vw, 10ch);   /* separa left / GIF / right de forma fluida */
+}
+
+/* Que .txtRight no se empuje a la derecha (venía de grid) */
+.txtRight{
+  justify-self: auto;
+}
+
+/* Mantén el tamaño del GIF controlado por la custom prop */
+.inner{ --gif-w: clamp(90px, 14vw, 160px); }
+@media (max-width: 860px){
+  .inner{ --gif-w: clamp(80px, 22vw, 140px); }
+}

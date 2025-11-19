@@ -1,0 +1,100 @@
+/* contenedor de la lista */
+.list { width: 100%;
+ }
+
+/* Fila */
+.row{
+  position:relative;
+  width:100%;
+  border-top:1px solid rgb(237, 237, 237);
+  padding:clamp(2px,5vw,64px) 0;
+  cursor: auto;
+}
+.row:last-child{ border-bottom:1px solid rgba(0,0,0,.25); }
+
+/* Título = tres columnas, pero la del centro vale 0 por defecto */
+.title{
+  margin:0 auto;
+  font-family:var(--font-text, serif);
+  font-weight:300;
+  line-height:1;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 0 minmax(0,1fr); /* ← sin hueco */
+  gap:0;                                              /* ← sin separación */
+  align-items:center;
+  text-align:center;
+  font-size:clamp(42px,9vw,40px);
+  width: 100%;
+  transition:grid-template-columns .32s ease, gap .32s ease;
+}
+
+.left,.right{ white-space:nowrap; }
+
+/* El centro NO existe mientras no esté activo */
+.center{ display:none; width:0; height:0; overflow:hidden; }
+
+/* Al activar (hover) abrimos hueco y desplazamos lados */
+.row.active .title{
+  grid-template-columns:minmax(0,1fr) clamp(100px,14vw,220px) minmax(0,1fr);
+  gap:clamp(12px,1.8vw,28px);
+}
+
+.row.active .left  { transform:translateX(-4vw); transition:transform .32s ease; }
+.row.active .right { transform:translateX( 4vw); transition:transform .32s ease; }
+
+/* Sólo cuando está activo existe el contenedor central */
+.row.active .center{ display:grid; place-items:center; }
+
+/* Título: 3 columnas, la central es 0 sin hover → SIN HUECOS */
+.title{
+  margin: 0 auto;
+  font-family: var(--font-text);
+  font-weight: 200;
+  line-height: 1;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 0 minmax(0,1fr); /* ← centro a 0 */
+  gap: 0;                                             /* ← sin separación */
+  align-items: center;
+  text-align: center;
+  font-size: clamp(42px, 9vw, 40px);
+  max-width: 1200px;
+  transition: grid-template-columns .28s ease, gap .28s ease;
+}
+
+.left, .right{ white-space: nowrap; }
+
+/* El centro existe pero no ocupa nada (sin hueco). */
+.center{
+  display: grid;       /* ya existe para evitar reflow fuerte */
+  place-items: center;
+  width: 0; height: 0; overflow: hidden;
+}
+
+/* El “hueco” y la imagen aparecen SOLO con hover en la fila */
+.row:hover .title{
+  grid-template-columns: minmax(0,1fr) clamp(200px,14vw,420px) minmax(0,1fr);
+  gap: clamp(2px, 1.8vw, 8px);
+}
+.row:hover .left  { transform: translateX(-4vw); transition: transform .28s ease; }
+.row:hover .right { transform: translateX( 4vw); transition: transform .28s ease; }
+
+/* Ahora el centro sí ocupa y muestra el preview */
+.row:hover .center{ width:auto; height:auto; overflow:visible; }
+
+/* Contenedor del preview para PixelImage(fill) */
+.preview{
+  position: relative;                       /* crucial para PixelImage fill */
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+/* (opcional) micro fade in de la imagen usando opacity del canvas */
+.preview :global(canvas){
+  opacity: 0;
+  animation: pi-fade .25s ease forwards;
+}
+@keyframes pi-fade{ to { opacity: 1; } }
+
+/* Por si quieres ajustar “sin espacio” aún más: */
+.title{ letter-spacing: 0; } /* quita tracking extra si lo hubiese */

@@ -1,0 +1,81 @@
+:root{
+  /* si ya las tienes definidas, no pasa nada: esto es fallback */
+  --bg-ink: #0a0a0a;
+  --fg:     #eaeaea;
+  --accent: #f2ff00; /* tu acento */
+}
+
+.wrap{
+  position: relative;
+  background: var(--bg, var(--bg-ink));
+  color: var(--fg);
+  padding: clamp(12vh, 10svh, 16svh) 6vw;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* línea arriba pequeña */
+.kicker{
+  font-size: clamp(12px, 1.1vw, 18px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  margin: 0 0 2.4rem;
+}
+
+/* GRAN titular */
+.big{
+  font-family: var(--font-display, inherit);
+  font-weight: 800;
+  line-height: 0.88;
+  font-size: clamp(42px, 9vw, 144px);
+  margin: 0.2rem 0 2.4rem;
+}
+
+/* “STARTS WITH” separado por letras */
+.mid{
+  display: inline-block;
+  margin: 0 0 2.8rem;
+  letter-spacing: 0.6em;
+  font-size: clamp(12px, 1.2vw, 18px);
+  text-transform: uppercase;
+  color: #cfcfcf;
+  position: relative;
+  gap: clamp(30px, 2.8vw, 46px);  /* separación entre líneas */
+  mix-blend-mode: difference;
+  font-family: var(--font-text);
+  font-size: clamp(10px, 1.05vw, 18px);
+}
+
+/* micro efecto de acento al pasar el ratón */
+.midChar{
+  display: inline-block;
+  transition: transform .15s cubic-bezier(.2,.8,.2,1), color .25s;
+}
+.midChar:hover{
+  transform: translateY(-2px);
+  color: var(--accent);
+}
+
+/* segundo GRAN titular (ligeramente más estrecho) */
+.big2{
+  font-family: var(--font-display, inherit);
+  font-weight: 900;
+  line-height: 0.9;
+  font-size: clamp(38px, 8.6vw, 132px);
+  margin: 0;
+}
+
+/* subrayado sutil “tarjeta” */
+.big::after, .big2::after{
+  content:"";
+  display:block;
+  width:min(220px, 30vw);
+  height:2px;
+  margin: clamp(14px,1.6vw,22px) auto 0;
+  background: linear-gradient(90deg, var(--accent), transparent 85%);
+  opacity: .6;
+}
+
+/* contraste con tu modo blend */
+.wrap :is(.big, .big2){ mix-blend-mode: normal; }

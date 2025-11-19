@@ -1,0 +1,110 @@
+{
+  "nav": { "about": "ABOUT", "works": "WORKS", "services": "SERVICES", "contact": "CONTACT" },
+  "hero": {
+    "titleLeft": "CREATIVE",
+    "titleRight": "DEVELOPER",
+    "based": "BASED",
+    "in": "IN",
+    "spain": "SPAIN",
+    "services": ["WEB DESIGN","UX/UI EXPERIENCE", "WEB DEVELOPMENT" ],
+    "open":"Open for offers and collaborations",
+    "quote1": "Good is the [[enemy]] of great",
+    "quote2": "Good is the [[beginning]] of great",
+    "job1":"FRONT-END",
+    "job2":"DEVELOPER",
+    "city":"VALENCIA"
+  },
+  "distance": { "prefix": "Collab? We are just", "suffix": "pixel apart." },
+  "works":{
+    "heading":"WORKS SELECTED",
+    "all":"SEE MORE",
+    "title":"WORKS",
+    "site":"View site",
+    "details":"View details",
+    "detailsoff":"Hidden details",
+    "work1":{
+      "h3":"FEDACV",
+      "paragraph1":"For [[FEDACV]] we designed a modern, accessible corporate website that centralizes calendars, regulations, licenses, results, and news.",
+      "paragraph2":"Its digital goal was to deliver clear, reliable, and always up-to-date information for drivers, clubs, officials, and fans, streamlining procedures and improving communication across the community.",
+      "paragraph3":"The interface prioritizes structure and usability to navigate extensive technical content while projecting a robust identity that blends professionalism with passion for motorsport.",
+      "collab1": "[[Collaborators:]]",
+      "collab2": "[[Collaborators:]] Just me"
+    },
+    "work2":{
+      "h3":"Santiago Sevillano",
+      "paragraph1":"For [[Santiago Sevillano Studio]] we created an elegant, highly visual English-language website that organizes its multidisciplinary team and portfolio.",
+      "paragraph2":"The digital objective was to be both a living archive and a professional communications tool: scalable, easy to update with new work and awards, and optimized for search engines and international markets.",
+      "paragraph3":"The result is a sober, contemporary digital identity that reflects the studio’s holistic approach—design, innovation, and creative direction—and clearly conveys its capability and ambition.",
+      "collab1": "[[Collaborators:]]",
+      "collab2": "[[Collaborators:]] Sandra Yago and me"
+    },
+    "work3":{
+      "h3":"Clínica Navarro Viana",
+      "paragraph1":"For [[Clínica Navarro Viana]] we proposed a digital presence that showcases its concept of natural beauty tied to health, prevention, and personalized treatments, backed by medical rigor, cutting-edge technology, and a multidisciplinary team.",
+      "paragraph2":"The aim was to make information on its specialties easy to access, highlight leadership in combined procedures and strengthen patient trust by emphasizing its fully equipped operating theater and central location.",
+      "paragraph3":"The site guides conversion with clear access to call to actions, pricing, projecting a warm, expert, and trustworthy image consistent.",
+      "collab1": "[[Collaborators:]]",
+      "collab2": "[[Collaborators:]] Sandra Yago and me"
+    },
+    "work4":{
+      "h3":"Espai Mariameta",
+      "paragraph1":"For [[Espai Mariameta]] we created a warm, empathetic website to present their portfolio, explain their philosophy, and build trust through transparency.",
+      "paragraph2":"The digital goal was to communicate who they are and how they work with clarity and a human tone, encouraging contact with potential clients.",
+      "paragraph3":"The platform favors simple, visual navigation, with projects presented through carefully curated imagery and first-person copy, friendly typography, neutral colors, and a responsive experience.",
+      "collab1": "[[Collaborators:]]",
+      "collab2": "[[Collaborators:]] Just me"
+    },
+    "work5":{
+      "h3":"GG Studio",
+      "paragraph1":"For [[GG STUDIO]] we designed a clean, professional website that organizes services, R&D lines, and a categorized portfolio with clear calls to action.",
+      "paragraph2":"Its digital objective was to consolidate a presence aligned with their method—strategy, innovation, and respect for the environment—enable fluid navigation for clients and collaborators, and strengthen SEO for architecture and sustainable innovation.",
+      "paragraph3":"The result is a sober, scalable digital identity that communicates technical rigor, global vision, and architectural character.",
+      "collab1": "[[Collaborators:]]",
+      "collab2": "[[Collaborators:]] Sandra Yago and me"
+    }
+  },
+  "about":{
+    "title":"ABOUT ME",
+    "info1":{
+      "title":"Introduction",
+      "description":"I’m a curious and creative person. I pursue the why behind every [[ aesthetic ]] and [[ code ]] decision and how it changes how you feel. I design to provoke meaning, and I code so it’s as functional and adaptive as possible. I find the best solution to every challenge."
+    },
+    "info2":{
+      "title":"Progresa Formación",
+      "description":"I discovered how interesting and creative the world of design and programming can be, and I completed an advanced degree course in web development."
+    },
+    "info3":{
+      "title":"Xufa Estudio",
+      "description":"I did an internship at a company where I had a role focused on aesthetics and digital presence, which made me want to specialize in that term."
+    },
+    "info4":{
+      "title":"Stack",
+      "description":"React, Next.js, TypeScript, JavaScript, Tailwind CSS <br><br>Framer Motion, GSAP <br><br>WordPress + Elementor + SEO <br><br>Basic Node, PHP, Python"
+    }
+  },
+  "contact": {
+  "sentence": "Let's talk {{gif}} about your project",
+  "name":"Your name",
+  "email":"Email",
+  "tell":"Tell me, what do you need?",
+  "send":"Send message",
+  "submitting": "By sending, you accept the",
+  "privacy": "Privacy Policy",
+  "kicker" : "LET’S START THE CONVERSATION",
+  "line1" : "GREAT DESIGN",
+  "mid"   : "STARTS WITH",
+  "line2" : "GREAT COLLABORATION",
+  "thanks": "Thanks!",
+  "respuesta":"I'll get back to you very soon."
+  },
+  "services":{
+    "info1":{
+      "title":"Web Design",
+      "description":"Guaranteed exclusivity: I create the optimal foundation for your digital presence with great attention to detail and aesthetics.",
+      "points":"Web design and development <br><br>Implementation of designs <br><br>Creation of interactive designs for replication <br><br>Online store and e-commerce platform <br><br>Redesign and relaunch <br><br>User interface and user experience optimization"
+    },
+    "info2":{
+
+    }
+  }
+}

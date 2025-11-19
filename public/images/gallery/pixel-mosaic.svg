@@ -1,0 +1,26 @@
+<!-- public/images/pixel-mosaic.svg -->
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 160 90" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+      <rect width="10" height="10" fill="#0f0f0f"/>
+      <path d="M10 0V10M0 10H10" stroke="#f7f7f7" stroke-opacity=".22" stroke-width=".6"/>
+    </pattern>
+    <style>
+      @keyframes pulse { from{opacity:.15} to{opacity:.65} }
+      .p { fill:#f7f7f7; opacity:.15; animation:pulse 1.6s ease-in-out infinite alternate }
+      .d1{animation-delay:.1s}.d2{animation-delay:.25s}.d3{animation-delay:.4s}
+      .d4{animation-delay:.55s}.d5{animation-delay:.7s}.d6{animation-delay:.85s}
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+
+  <!-- píxeles “vivos” (múltiplos de 10) -->
+  <rect class="p d1" x="90" y="20" width="10" height="10"/>
+  <rect class="p d2" x="70" y="30" width="10" height="10"/>
+  <rect class="p d3" x="110" y="40" width="10" height="10"/>
+  <rect class="p d4" x="40" y="50" width="10" height="10"/>
+  <rect class="p d5" x="60" y="60" width="10" height="10"/>
+  <rect class="p d6" x="130" y="35" width="10" height="10"/>
+</svg>

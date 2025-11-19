@@ -1,42 +1,1497 @@
+/* ========== BASE & TIPOGRAFÍA ========== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --bg: #101010;
+  --bg-secondary: #151515;
+  --fg: #f7f7f7;
+  --fg-secondary: #dddddd;
+  --accent: #f2ff00;
+  --font-display: var(--font-display); /* Anton (next/font) */
+  --font-text: var(--font-text); /* B612 Mono (next/font) */
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-text), ui-monospace, monospace;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Links genéricos */
 a {
   color: inherit;
   text-decoration: none;
 }
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* ========== PRELOADER ========== */
+.preloader {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 90;
+}
+.preloader--white {
+  background: var(--bg);
+  color: var(--fg);
+}
+.pre-num {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  font-size: clamp(14px, 2.6vw, 18px);
+}
+
+/* ========== PIXEL TRANSITION (sólida) ========== */
+/* El overlay no añade fondo */
+.px{ background: transparent; }
+
+/* Cada celda arranca con el bg y acaba transparente */
+.px .cell{ background: var(--bg); }
+
+/* ENTRADA: usa --d-in (puede ser diagonal) */
+.px-in  .cell{
+  animation: pxColorIn  var(--px-in-dur, 1.5s) cubic-bezier(.2,.8,.2,1) forwards,
+             pxScale    var(--px-in-dur, 1.5s) cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: var(--d-in);
+}
+
+/* SALIDA: usa --d-out (random por defecto) */
+.px-out .cell{
+  animation: pxColorOut var(--px-out-dur, 1.5s) cubic-bezier(.2,.8,.2,1) forwards,
+             pxScale    var(--px-out-dur, 1.5s) cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: var(--d-out);
+}
+/* El overlay no añade fondo propio */
+.px{ background: transparent; }
+.px .cell{ background: var(--bg); }
+
+/* Overlay */
+.px{
+  position: fixed; inset: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* cols por defecto */
+  grid-auto-rows: 1fr;
+  z-index: 9000;          /* por encima del contenido */
+  pointer-events: none;   /* no bloquea clicks */
+}
+
+/* Color del pixel (overlay). Que contraste con tu fondo. */
+.px .cell{
+  background: var(--wipe, #F7F7F7);
+  will-change: background-color, transform;
+}
+
+/* Keyframes: IN = aparece; OUT = desaparece */
+@keyframes pxIn   { from { background: transparent; } to { background: var(--wipe, #F7F7F7); } }
+@keyframes pxOut  { from { background: var(--wipe, #F7F7F7); } to { background: transparent; } }
+
+/* Usamos CSS vars para duración total y delay por celda */
+.px-in  .cell{
+  animation: pxIn  var(--in)  cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: var(--din);
+}
+.px-out .cell{
+  animation: pxOut var(--out) cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: var(--dout);
+}
+
+/* Asegura fin en transparente (evita “pantallazo negro”) */
+@keyframes pxColorIn  { from{ background: var(--bg); } to{ background: transparent; } }
+@keyframes pxColorOut { from{ background: var(--bg); } to{ background: transparent; } }
+@keyframes pxScale    { from{ transform: scale(.92); } to{ transform: scale(1); } }
+
+.px-in .cell {
+  animation: pxColorIn 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+    pxScale 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--d);
+}
+.px-out .cell {
+  animation: pxColorOut 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+    pxScale 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--d);
+}
+
+.olh-row {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(12px, 2vw, 18px) clamp(18px, 3vw, 36px);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-text);
+}
+
+/* enlaces del header: sin subrayado ni al hover */
+.olh-header a {
+  text-decoration: none !important;
+}
+.olh-header a:hover {
+  text-decoration: none !important;
+}
+
+/* Brand + puntos accent como "." */
+.olh-brand-link {
+  display: inline-block;
+}
+.olh-brand {
+  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.olh-brand .dot {
+  color: var(--accent);
+}
+
+
+/* Nav centrado */
+.olh-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(18px, 3vw, 48px);
+}
+
+/* Right side */
+.olh-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: clamp(14px, 2vw, 26px);
+}
+
+/* ===== Links con hover por letra + “punto azul” como texto "." ===== */
+.olh-link {
+  position: relative;
+  display: inline-flex;
+  gap: 0;
+  letter-spacing: 0.04em;
+  --ink: var(--fg); /* color del símbolo por letra */
+}
+
+/* Evita interferencias */
+.olh-header .olh-link,
+.olh-header .olh-brand-link{
+  background: transparent;
+}
+
+
+/* En vez de círculo, mostramos un "." azul al hover */
+.olh-link::after {
+  content: ".";
+  color: var(--accent);
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-45%) scale(0);
+  transform-origin: left center;
+  transition: transform 0.16s ease;
+  font-weight: 700;
+}
+.olh-link:hover::after {
+  transform: translateY(-45%) scale(1);
+}
+
+/* Carácter que cambia: el símbolo SIEMPRE visible y en #101010 */
+.olh-char {
+  position: relative;
+  display: inline-block;
+  white-space: pre;
+  line-height: 1em;
+}
+.olh-char::after {
+  content: attr(data-show);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--ink); /* #101010 forzado */
+  opacity: 0;
+  transform: translateY(18%);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+/* CTA sin subrayado (puedes dejarlo así o añadir borde si quieres) */
+.olh-cta {
+  font-weight: 400;
+}
+
+/* ===== Idioma desplegable ===== */
+.lang {
+  position: relative;
+}
+.lang-btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.caret {
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+.lang-pop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: #fff;
+  color: #000;
+  border-radius: 8px;
+  padding: 6px;
+  min-width: 72px;
+  z-index: 50;
+}
+.lang-pop button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 6px 8px;
+  font: inherit;
+}
+.lang-pop button:hover {
+  background: var(--fg);
+}
+/* ===== Idioma horizontal ===== */
+.lang-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+/* ocultamos separador y “otra opción” hasta hover del bloque */
+.lang-inline .sep {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  transition: opacity 0.16s ease, width 0.16s ease;
+}
+.lang-inline .other {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  pointer-events: none;
+}
+
+/* al pasar por el bloque de idioma aparecen */
+.lang-inline:hover .sep {
+  opacity: 0.6;
+  width: auto;
+}
+.lang-inline:hover .other {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* el seleccionado SIEMPRE enseña su punto */
+.lang-inline .lang-current .current-dot {
+  margin-left: 2px;
+  display: inline-block;
+  transform: translateY(-0.04em);
+}
+
+/* el punto de la opción aparece SOLO al hover sobre esa opción
+   (y también si pasas por encima del seleccionado, se refuerza) */
+.lang-inline .hover-dot {
+  margin-left: 2px;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-0.04em) scale(0.8);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.lang-inline .other:hover .hover-dot,
+.lang-inline .lang-current:hover .current-dot {
+  opacity: 1;
+  transform: translateY(-0.04em) scale(1);
+}
+.olh-header .lang-inline .dot,
+.olh-header .lang-inline .current-dot,
+.olh-header .lang-inline .hover-dot {
+  color: var(--accent) !important;  /* asegura que gane a "color: inherit" */
+  mix-blend-mode: normal;           /* evita invertir con difference */
+}
+/* Responsive */
+@media (max-width: 720px) {
+  .olh-row {
+    grid-template-columns: 1fr auto auto;
   }
+  .olh-nav {
+    gap: clamp(12px, 2.4vw, 22px);
+  }
+}
+
+/* ===== Cursor ring ===== */
+.c-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  pointer-events: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--accent); /* color desde tu tema */
+  transform: translate(-9999px, -9999px); /* fuera hasta primer mousemove */
+  transition: width 0.18s ease, height 0.18s ease, border-width 0.18s ease,
+    transform 0.03s linear, opacity 0.2s ease;
+}
+
+/* cuando el cursor está sobre enlaces/botones, el anillo se agranda */
+.c-ring[data-pointer="1"] {
+  width: 84px;
+  height: 84px;
+  border-width: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-ring {
+    display: none;
+  }
+}
+
+.olh-link {
+  --ink: var(--fg);
+}
+.olh-char {
+  position: relative;
+  display: inline-block;
+}
+/* los símbolos usan SIEMPRE el color del texto */
+.olh-char::after {
+  content: attr(data-show);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--fg); /* <— aquí el cambio clave */
+  opacity: 0;
+  transform: translateY(18%);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+/* al hover escondemos la letra y mostramos el símbolo */
+.olh-char:hover {
+  color: transparent;
+}
+.olh-char:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* el brand hereda el mismo comportamiento/colores */
+.olh-brand {
+  --ink: currentColor;
+}
+/* ========== HERO estilo referencia ========== */
+/* === HERO (composición tipo Olha) =============================== */
+.olh-hero {
+  background: var(--bg);
+  color: var(--fg);
+  padding-top: clamp(8px, 1.2vw, 18px);
+}
+
+.olh-wrap {
+  /* ya tenías padding; lo mantenemos */
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(36px, 5vw, 60px) clamp(18px, 3vw, 36px) clamp(60px, 8vw, 100px);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: clamp(34px, 5vw, 60px);
+  gap: clamp(6px, 1vw, 12px);
+}
+
+/* Título gigante ocupando toda la anchura, debajo queda “based in …” */
+.olh-title {
+  margin: 0;
+  z-index: 101;
+  align-self: end;
+  place-items: center;
+  grid-column: 1 / -1;
+  grid-row: 1 / span 3; /* altura visual del bloque del título */
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0;
+  font-size: clamp(42px, 12.5vw, 175px);
+}
+
+/* “BASED • IN • SPAIN” pegado a la base del título, hacia la derecha */
+
+.olh-loc.based::after {
+  content: "";
+  display: inline-block;
+  width: 100%; 
+}
+
+/* Fallback cuando inter-character no está (Chrome antiguo, etc.) */
+@supports not (text-justify: inter-character) {
+  .olh-loc.based {
+    letter-spacing: clamp(0.35em, 2.6vw, 1.25em);
+  }
+}
+
+/* Panel oscuro detrás de foto+servicios */
+.olh-panel {
+  grid-column: 4 / -5; /* ancho casi completo */
+  grid-row: 5 / span 4; /* arranca bajo “based in …” */
+  background: var(--bg-secondary);
+  z-index: 1; /* por debajo de foto y lista */
+}
+
+/* Foto a la derecha, solapando el título y por encima del panel */
+.olh-photo {
+  grid-column: 6/ 15; /* columna derecha */
+  grid-row: 3 / span 24; /* empieza a la altura del “based in …” */
+  align-self: start;
+  z-index: 2; /* por encima del panel */
+  margin: 0;
+  pointer-events: none;
+}
+.olh-photo canvas,
+.olh-photo img {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+
+/* Servicios: columna a la izquierda (misma fila que BASED IN SPAIN) */
+.olh-services{
+  grid-row: 4;                 /* igual que .olh-based */
+  grid-column: 1 / 8;          /* al bloque izquierdo; ajusta si tu grid cambia */
+  align-self: start;
+  justify-self: start;
+  text-align: left;
+  margin: 0;
+  padding-left: 10px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;      /* ← vertical */
+  gap: clamp(10px, 1.4vw, 16px);  /* separación entre líneas */
+  mix-blend-mode: difference;
+  font-family: var(--font-text);
+  font-size: clamp(10px, 1.05vw, 12px);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* cada línea con tracking fijo de 15px */
+.olh-services li{
+  letter-spacing: 15px;        /* ← lo que pediste */
+  white-space: nowrap;
+  word-spacing: clamp(30px, 4vw, 80px);
+  transform: translateX(0);
+}
+
+/* si tenías el “truco” de justificado por carácter, quítalo para este bloque */
+.olh-services li::after{ content: none; }
+
+/* (Opcional) en móviles reduce el tracking para que no se rompa */
+@media (max-width: 640px){
+  .olh-services li{ 
+  letter-spacing: 8px;
+  word-spacing: clamp(14px, 2.5vw, 28px); }
+}
+/* ======= Responsive ======= */
+@media (max-width: 1100px) {
+  .olh-loc.based {
+    grid-column: 7 / -1;
+  }
+  .olh-photo {
+    grid-column: 7 / -1;
+  }
+}
+
+@media (max-width: 860px) {
+  .olh-wrap {
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: clamp(30px, 8vw, 58px);
+  }
+  .olh-title {
+    grid-column: 1 / -1;
+    grid-row: 1 / span 4;
+    font-size: clamp(40px, 16vw, 92px);
+  }
+  .olh-loc.based {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    letter-spacing: 0.35em;
+  }
+  .olh-panel {
+    grid-column: 1 / -1;
+    grid-row: 6 / span 10;
+    border-radius: 14px;
+  }
+  .olh-photo {
+    grid-column: 3 / -1;
+    grid-row: 6 / span 10;
+  }
+}
+@media (max-width: 560px) {
+  .olh-loc.based {
+    letter-spacing: 0.28em;
+  }
+  .olh-photo {
+    grid-column: 2 / -1;
+  }
+}
+
+/* Services dentro del panel (sin márgenes extra) */
+.olh-panel-services {
+  align-self: center;
+}
+.olh-panel .olh-services {
+  margin: 0;
+}
+
+/* La foto ahora vive dentro del panel (no absoluta) */
+.olh-panel .olh-photo {
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 50%;
+  margin: 0;
+  padding: 0;
+}
+.olh-panel .olh-photo canvas,
+.olh-panel .olh-photo img {
+  display: flex;
+  width: 100%;
+  height: auto;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 980px) {
+  .olh-panel {
+    grid-template-columns: 1fr; /* apilar */
+  }
+  .olh-panel-services {
+    order: 2;
+  } /* services bajo la foto */
+  .olh-panel .olh-photo {
+    order: 1;
+    width: min(92%, 560px);
+    justify-self: center;
+  }
+  .olh-loc.based--right {
+    margin-left: 0;
+    padding-right: 0;
+  } /* vuelve a la izq. */
+}
+
+
+/* ========= RESPONSIVE ========= */
+@media (max-width: 1200px) {
+  .olh-photo {
+    top: clamp(120px, 20vw, 220px);
+    left: clamp(260px, 48vw, 560px);
+    width: clamp(240px, 34vw, 480px);
+  }
+}
+
+@media (max-width: 860px) {
+  .olh-title {
+    font-size: clamp(40px, 16vw, 92px);
+    line-height: 0.9;
+  }
+  .olh-photo {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(82%, 460px);
+    margin: clamp(18px, 4vw, 30px) 0 0;
+    z-index: 1;
+  }
+  .olh-loc.based {
+    letter-spacing: 0.35em;
+  }
+}
+
+@media (max-width: 560px) {
+  .olh-title {
+    font-size: clamp(36px, 18vw, 76px);
+  }
+  .olh-loc.based {
+    letter-spacing: 0.28em;
+    gap: clamp(16px, 4vw, 26px);
+  }
+}
+
+/* Frase bottom-left (no clickable) */
+.px-distance {
+  display: flex;
+  position: absolute;
+  left: clamp(10px, 15vw, 35px);
+  bottom: clamp(12px, 2.2vw, 22px);
+  z-index: 40;
+  color: var(--fg-secondary);
+  font-family: var(--font-text);
+  font-size: clamp(12px, 1.15vw, 14px);
+  letter-spacing: 0.01em;
+  pointer-events: none; /* <- no bloquea interacciones debajo */
+}
+.px-distance b {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Aislar la zona para que el blend no “contamine” fuera del hero  */
+.olh-wrap {
+  isolation: isolate;
+}
+
+/* Cualquier elemento con esta clase cambiará de color según lo que tenga debajo */
+.blend-cut {
+  mix-blend-mode: difference; /* diferencia con los píxeles de fondo (la foto, el panel, etc.) */
+  will-change: mix-blend-mode;
+}
+
+/* Opcional: si quieres un comportamiento algo más suave sobre grises */
+@media (prefers-color-scheme: dark) {
+  .blend-cut {
+    mix-blend-mode: exclusion;
+  }
+}
+
+.olh-title {
+  mix-blend-mode: difference;
+} /* o usa .blend-cut en vez de esta línea */
+.olh-loc.based {
+  mix-blend-mode: difference;
+}
+
+.olh-link:focus-visible,
+.lang-inline button:focus-visible,
+.olh-brand-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* La grid no “estira” filas y recorta cola de padding */
+.olh-wrap {
+  grid-auto-rows: minmax(0, auto); /* asegura altura por contenido */
+  padding-bottom: clamp(8px, 1.5vw, 16px);
+}
+
+/* Corta cualquier pixel sobrante (sombras, baseline, etc.) dentro del hero */
+.olh-hero {
+  overflow: clip;
+}
+
+/* Panel oscuro detrás de foto+servicios */
+.olh-panel {
+  grid-column: 4 / -5;
+  grid-row: 5 / span 25; /* misma fila de inicio que .olh-photo (3) y 1 fila más que su span 24 */
+  background: var(--bg-secondary);
+  z-index: 1;
+}
+
+.distance-pixel {
+  grid-column: 4 / 7; /* columna izquierda */
+  grid-row: 6 / span 6; /* se ubica dentro del panel */
+  z-index: 2;
+}
+
+/* usa flex con separación “normal” entre las tres piezas */
+.olh-loc.based{
+  display:flex;
+  align-items:center;
+  justify-content: space-between; 
+  width:100%;
+  white-space: nowrap;
+  text-align: left;          /* override */
+  text-justify: auto; 
+}
+.olh-loc.based::after{ content: none; }
+
+/* ===== Scramble (revelado inicial con símbolos) ===== */
+.fx-scramble .olh-char{ color: transparent; }
+.fx-scramble .olh-char::after{
+  opacity: 1 !important;
+  transform: translateY(0); /* por si tu hover usa traslación */
+}
+
+/* cuando una letra queda “fija”, vuelve a verse la letra real */
+.fx-scramble .olh-char[data-locked="1"]{ color: inherit; }
+.fx-scramble .olh-char[data-locked="1"]::after{ opacity: 0; }
+
+
+/* Por si el hero tenía margen superior */
+.olh-hero { margin-top: 0 !important; }
+/* Empuja el contenido para que no quede debajo del header */
+
+/**/
+/* reset mínimo */
+html, body { margin: 0; padding: 0; }
+
+/* altura por defecto por si aún no se ha medido */
+:root { --header-h: 72px; }
+
+/* 1) Header fijo arriba con z-index */
+.olh-header{
+  position: sticky !important;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;              /* ← vuelve a tener z-index */
+  background: transparent;    /* MUY importante para el blend */
+  pointer-events: auto;
+}
+
+/* Espaciador que evita que el hero “se meta” bajo el header */
+.olh-header-spacer {
+  pointer-events: none;
+}
+
+/* Aplica el blend a los bloques de texto del header */
+.olh-brand,
+.olh-nav,
+.lang-inline,
+.olh-cta {
+  mix-blend-mode: difference;  /* se invertirá sobre fondos claros */
+}
+
+/* Evita que puntitos o decoraciones cambien de modo si no quieres */
+.olh-header .dot{
+  mix-blend-mode: normal;  /* que no se invierta el punto si no te interesa */
+}
+
+/* Capa de FX (puede animarse con opacity/transform; no afecta al blend) */
+.olh-header-fx{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* La capa contenedora NO mezcla (deja el blend a los hijos) */
+.blend-diff{
+  color: var(--fg);
+  mix-blend-mode: normal;     /* ← quítalo del contenedor */
+  position: relative;
+  z-index: auto;
+  background: transparent;
+}
+
+/* Propaga color a todos los textos/enlaces del header */
+.olh-header-ui,
+.olh-header-ui *{
+  color: inherit;
+}
+
+/* Evita que los links/focus añadan backgrounds que rompan la mezcla */
+.olh-link, .olh-brand-link{
+  background: transparent;
+}
+
+/* 3) Mezcla SOLO en los bloques de texto (ahora sí funciona con el z-index del padre) */
+.olh-header .olh-brand,
+.olh-header .olh-nav,
+.olh-header .lang-inline,
+.olh-header .olh-cta{
+  mix-blend-mode: difference; /* ← la magia va aquí */
+  color: var(--fg);
+  background: transparent;
+}
+
+/* El contenedor principal NO debe tener padding-top extra ya */
+#page-root { padding-top: 0 !important; }
+
+/* Asegura que el primer bloque no colapse márgenes hacia arriba */
+#page-root > :first-child { margin-top: 0 !important; }
+
+.hero-pin {            /* contenedor externo del hero */
+  height: 345vh;       /* cuánto “scroll” interno quieres para animar */
+  position: relative;
+}
+
+/* Contenido del hero que queda pegado a la ventana mientras se hace el scroll interno */
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  top: var(--header-h, 80px);                      /* ↓ evita solaparse */
+  min-height: calc(100vh - var(--header-h, 80px)); /* ocupa viewport útil */
+  display: grid;
+  align-items: start;  /* o center si prefieres */
+}
+
+/* resalta sólo la letra envuelta */
+.svc-accent {
+  color: var(--accent);
+}
+
+.hero-open{
+  display:flex;
+  position: absolute;
+  right: clamp(10px, 15vw, 35px);
+  bottom: clamp(12px, 2.2vw, 0px);
+  z-index: 40;
+  opacity: 0;
+  text-align: right;
+  font-family: var(--font-text);
+  font-size: clamp(12px, 1.15vw, 14px);
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  color: var(--fg-secondary);
+  pointer-events: none; /* no roba clicks */
+}
+.hero-open .dot{ color: var(--accent); margin-left: .35em; }
+
+/* si usas blend en el hero y te gusta que la cita también “corte” */
+@media (prefers-color-scheme: dark){
+  .hero-open{ mix-blend-mode: difference; }
+}
+
+/* El contenedor toma el ancho de la línea superior */
+.olh-based-wrap{
+  display: inline-grid;           /* misma columna para ambas líneas */
+  grid-column: 9 / 13;         /* igual que tenías la .olh-based original */
+  grid-row: 4;                 /* bajo el título */
+  position: relative;
+  align-self: start;
+  justify-self: start;
+  justify-items: center;          /* centra el contenido horizontal */
+  gap: .5rem;                     /* separación entre líneas */
+}
+
+/* Ambas comparten el mismo tracking para que el ojo no note diferencias */
+.olh-loc{
+  letter-spacing: var(--hero-wide-track, 0.45em);
+  white-space: nowrap;
+  line-height: 1;
+  margin: 0;
+  z-index: 3;
+  align-self: start;
+  justify-self: start;
+  display: flex;
+  gap: clamp(80px, 5vw, 40px);
+  font-family: var(--font-text);
+  font-size: clamp(10px, 1.05vw, 12px);
+  letter-spacing: 1em;
+  font-weight: 400;
+}
+
+/* La de abajo se centra automáticamente porque el contenedor ya define el ancho */
+.olh-loc.city{ 
+  position: absolute;
+  white-space: nowrap;
+  top: calc(1.6em + 10px);       /* separacion bajo la línea (ajusta) */
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-text);
+  gap: clamp(120px, 5vw, 120px);
+  font-size: clamp(10px, 1.05vw, 12px);
+  letter-spacing: clamp(0.35em, 2.6vw, 1.25em);
+  text-transform: uppercase;
+  opacity: 0;                   /* será animado por framer */
+  pointer-events: none;
+  mix-blend-mode: difference;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: .9 !important;
+}
+
+/* Bloque del mosaico bajo “pixel” */
+.pixel-mosaic.desktop{
+  position: absolute;
+  top: calc(1.7em + 42px);
+  left: 50%;                 /* ← necesario para centrar */
+  translate: -50% 0;         /* (mejor que transform para no pisar animaciones) */
+  width: clamp(320px, 32vw, 680px);
+  aspect-ratio: 16 / 9;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 8;
+}
+
+/* Que imagen y overlay ocupen EXACTO el contenedor (mismo box) */
+.pixel-mosaic.desktop > *{
+  position: absolute;
+  inset: 0;
+}
+
+/* SVG e imagen adaptan al mismo 16:9 del contenedor */
+.pixel-mosaic.desktop svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pixel-mosaic.desktop .pixel-mosaic.desktop-img{
+  /* Si quieres ver todo sin recorte usa 'contain' en vez de 'cover' */
+  object-fit: cover;
+}
+.pixel-mosaic.desktop-img{
+  position: absolute;      /* ya lo tienes inline, ok */
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlay encima, sin bloquear eventos */
+.pixel-mosaic.desktop-overlay{
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.pixel-mosaic-hit{
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  pointer-events: auto;     /* <- captura los eventos */
+  cursor: pointer;          /* feedback en desktop */
+}
+
+/* Ajustes suaves por tamaño de pantalla (opcional) */
+@media (min-width: 1400px){
+  .pixel-mosaic.desktop{ width: clamp(560px, 32vw, 920px); }  /* misma proporción, más ancho en desktop grande */
+}
+@media (max-width: 900px){
+  .pixel-mosaic.desktop{ width: min(78vw, 560px); }
+}
+/* ====== HEADER Mobile ====== */
+
+/* Por defecto: botón oculto (solo aparece en mobile) */
+.olh-menu-btn {
+  display: none;
+}
+
+/* Punto amarillo reutilizable en menú */
+.menu-dot { 
+  color: var(--accent);
+  margin-left: 8px;            /* pegado al texto */
+  transform: translateY(-0.06em);
+  font-weight: 700;
+}
+
+/* Breakpoint tablet/móvil */
+@media (max-width: 860px) {
+  /* Oculta nav/acciones derecha; muestra hamburguesa */
+  .olh-nav,
+  .olh-right { display: none; }
+
+  .olh-row { position: relative; }
+
+  .olh-menu-btn {
+    display: inline-flex;
+    position: absolute;
+    right: clamp(10px, 3.6vw, 18px);   /* 👈 pegado a la derecha */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px; height: 28px;
+    flex-direction: column;
+    justify-content: space-between;
+    background: transparent;
+    border: 0; padding: 0; margin: 0;
+    cursor: pointer;
+    z-index: 1002;
+  }
+  .olh-menu-btn span{
+    display:block; width:100%; height:2px;
+    background: var(--fg);
+    transition: transform .25s ease, opacity .2s ease;
+  }
+  .olh-menu-btn.is-open span:nth-child(1){ transform: translateY(13px) rotate(45deg); }
+  .olh-menu-btn.is-open span:nth-child(2){ opacity: 0; }
+  .olh-menu-btn.is-open span:nth-child(3){ transform: translateY(-13px) rotate(-45deg); }
+
+  /* Drawer */
+  .olh-drawer{
+    position: fixed;
+    inset: 0 0 0 auto;       /* paneo desde la derecha */
+    width: min(84vw, 360px);
+    background: #111;        /* respeta tu tema */
+    color: var(--fg);
+    z-index: 1001;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    box-shadow: -6px 0 28px rgba(0,0,0,.35);
+  }
+
+  .drawer-head{
+    position: relative;
+    padding: clamp(14px, 4vw, 24px);
+    min-height: 68px;
+  }
+
+  /* ⬅️ Logo arriba-izquierda */
+  .drawer-brand{
+    position: absolute;
+    left: clamp(14px, 4vw, 24px);
+    top: clamp(12px, 3.5vw, 20px);
+    text-align: left;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .drawer-brand .dot { color: var(--accent); margin-left: 4px; }
+
+  /* ➡️ Cerrar arriba-derecha */
+  .drawer-close{
+    position:absolute;
+    right: clamp(14px, 4vw, 24px);
+    top: clamp(10px, 3.5vw, 20px);
+    background: transparent;
+    border: 0;
+    color: var(--fg);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  /* Items y punto amarillo */
+  .drawer-nav{
+    padding: clamp(10px, 3.5vw, 20px) clamp(18px, 4.5vw, 28px) clamp(26px, 6vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 3.5vw, 18px);
+  }
+  .drawer-link{
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-size: clamp(18px, 6.4vw, 26px);
+    line-height: 1.15;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+
+  .drawer-lang{
+    margin-top: clamp(12px, 4vw, 20px);
+    opacity: .85;
+  }
+  .menu-dot{ color: var(--accent); margin-left: 8px; font-weight: 700; }
+
+  /* Idioma con la MISMA tipografía/jerarquía */
+  .drawer-lang .lang-inline{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-size: clamp(18px, 6.4vw, 26px);  /* misma escala que items */
+    line-height: 1.15;
+  }
+  .drawer-lang .lang-inline .dot{ color: var(--accent); }
+  .drawer-lang .sep{ opacity: .7; }
+  .drawer-lang .other{
+    appearance: none; border: 0; background: transparent; color: inherit; cursor: pointer;
+    padding: 0; margin: 0;
+  }
+}
+
+/* contenedor existente: sin cambios estructurales */
+.olh-photo {
+  grid-column: 6 / 15;
+  grid-row: 3 / span 24;
+  align-self: start;
+  width: 37%;
+  z-index: 2;
+  margin: 0;
+  pointer-events: none; /* mantiene el comportamiento actual */
+  position: relative; /* clave para posicionar el rol */
+  padding-bottom: clamp(16px, 1.8vw, 24px);
+}
+
+/* La “carcasa” de la imagen debe ser el ancla */
+.olh-photo-media{
+  position: relative;      /* ← imprescindible para que .olh-role use este ancho */
+  width: 100%;
+  aspect-ratio: 3/4;
+}
+
+/* la “carcasa” de la imagen */
+.olh-photo-media canvas,
+.olh-photo-media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* El rol sigue anclado a la imagen */
+.olh-role{
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(-1 * clamp(8px, 3vw, 12px)); /* mismo offset que antes */
+  display: flex;
+  justify-content: space-between;              /* arranca a la izquierda */
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: clamp(10px, 1.05vw, 12px);
+  line-height: 1;
+  color: #fff;
+  pointer-events: none;
+}
+.olh-role .dot{ color: var(--accent); margin-left: .35em; }
+.olh-role .role-left,
+.olh-role .role-right{ white-space: nowrap; } /* nunca parten */
+
+@supports (mix-blend-mode: difference){
+  .olh-role{ mix-blend-mode: difference; }
+}
+
+/* Si quieres ajustar el gap por breakpoint: */
+@media (max-width: 900px){
+  .olh-role{ --role-gap: clamp(36px, 8vw, 96px); }
+}
+@media (max-width: 600px){
+  .olh-role{ --role-gap: clamp(24px, 6vw, 64px); }
+}
+
+/* === Reactive Quote === */
+.reactive-quote{
+  position: absolute;
+  --rq-top-adjust: 26vh;
+  --rq-right-gap: -10vw;
+  top: calc(50% + var(--rq-top-adjust));
+  right: var(--rq-right-gap);
+  transform: translateY(-50%);
+  font-family: var(--mono, 'B612 Mono', ui-monospace, monospace);
+  font-size: clamp(14px, 1.10vw, 16px);
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+  color: var(--fg);
+  mix-blend-mode: difference;
+  pointer-events: auto;
+  user-select: none;
+  cursor: none;          /* ocultamos cursor; lo representa .c-ring */
+  z-index: 3;
+}
+
+.rq-wrap {
+  position: absolute; 
+  pointer-events: auto;
+  z-index: 3;
+}
+
+.reactive-quote .hero-quote1{
+  position: relative;        /* da tamaño al contenedor */
+  display: inline-block;     /* el ancho coincide con el texto */
+  white-space: nowrap;
+  pointer-events: none;      /* eventos siguen en el contenedor */
+  color: var(--fg-secondary);
+}
+.reactive-quote .hero-quote2{
+  position: absolute;        /* se superpone a la base */
+  left: 0; top: 0; right: 0; bottom: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  color: var(--fg);
+  will-change: clip-path;    /* evita parpadeos */
+}
+
+/* Palabras destacadas desde i18n */
+.reactive-quote .rq-accent{ color: var(--accent); }
+
+/* Ya NO necesitamos .rq-lens (el aro propio). Elimínalo si lo tenías. */
+
+@media (prefers-reduced-motion: reduce){
+  .reactive-quote{ transition: none !important; }
+}
+
+/* Modo "lupa" para el mismo anillo global */
+.c-ring.is-lens {
+  width: 84px;
+  height: 84px;
+  border-width: 3px;
+}
+
+/* ====== MOBILE (<= 768px) STATIC & CENTERED ====== */
+@media (max-width: 768px){
+  .hero-pin{
+    height: 0vh;
+  }
+
+  .olh-wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;               /* centrado global */
+    min-height: 100svh;
+   
+    gap: clamp(8px, 2.4vh, 16px);
+  }
+  /* Título centrado y controlado */
+  .olh-title{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: clamp(70px, 14.5vw, 64px);
+    line-height: 0.92;
+    margin-bottom: clamp(-26px, -24vw, -10px);
+  }
+
+  /* “BASED IN SPAIN” centrado y pequeño */
+  .olh-based-wrap{ order: 2; width: 100%; margin-top: 0; margin-bottom: 12px; }
+  .olh-loc.based{
+    display: flex;
+    justify-content: center;
+    gap: clamp(48px, 2.6vw, 12px);
+    font-size: clamp(9px, 2.8vw, 11px);      /* ↓ tamaño */
+    letter-spacing: 0.45em;                  /* ↓ tracking */
+  }
+  .olh-loc.city{
+    margin-top: clamp(24px, 2vh, 30px);
+    text-align: center;
+    font-size: clamp(9px, 2.8vw, 11px);      /* ↓ tamaño */
+    letter-spacing: 0.42em;
+  }
+
+  /* Foto y rol compactos y centrados */
+  .olh-photo{
+    order: 3;
+    width: 70%;
+    margin: clamp(6px, 2vh, 12px) auto 0;
+    align-self: center;
+  }
+  .olh-photo-media{ position: relative; width: 100%; aspect-ratio: 3/4; }
+  .olh-role{
+    position: static;
+    width: 100%;
+    margin: clamp(8px, 1.2vh, 10px) auto 0;
+    display: flex;
+    justify-content: center;
+    gap: clamp(12px, 4.8vw, 2px);
+    font-size: clamp(8px, 2.6vw, 10px);      /* ↓ tamaño */
+    letter-spacing: 0.42em;
+    mix-blend-mode: normal;
+  }
+  .olh-role .dot{ color: var(--accent); }
+
+  /* Services más pequeños y centrados */
+  .olh-services{
+    order: 4;
+    display: grid;                  /* grid = spacing sencillo */
+    place-items: center;
+    width: 100%;
+    gap: clamp(6px, 1,6vw, 10px);
+    font-size: clamp(8px, 2.6vw, 10px);
+  }
+  .olh-services li motion-li{
+    display: inline-block;
+    letter-spacing: .35em;
+  }
+
+  .pixel-mosaic.mobile{
+  order: 5;                             /* entre services (4) y open (6) */
+  display: block;
+  width: min(75%, 640px);
+  aspect-ratio: 16 / 9;                 /* aporta altura, no se colapsa */
+  margin: clamp(10px, 2vh, 16px) auto 0;
+  position: relative;                   /* contenedor de los hijos abs */
+  overflow: hidden;
+  top: clamp(-20px, -4vw, -20px);
+  z-index: auto;
+  mix-blend-mode: normal;
+  pointer-events: auto;    
+  padding-bottom: 30px;
+}
+.pixel-mosaic.mobile > *{
+  position: absolute;
+  inset: 0;
+}
+.pixel-mosaic.mobile .pixel-mosaic-img,
+.pixel-mosaic.mobile .pixel-mosaic-img > canvas,
+.pixel-mosaic.mobile .pixel-mosaic-img > img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.pixel-mosaic.mobile .pixel-mosaic-overlay{ pointer-events: none; }
+
+/* Open: debajo del mosaico */
+.hero-open{
+  order: 7;
+  display: block;
+  width: 100%;
+  font-size: clamp(8px, 2.6vw, 10px);
+  letter-spacing: 0.04em;
+  padding-right: 43;
+  bottom: clamp(1px, 2.2vw, 0px);
+}
+
+/* Ocultar quote y panel en móvil */
+.px-distance{display: none;}
+.rq-wrap{ display: none; }
+.olh-panel{ display: none; }
+
+}
+
+/* ========= DESKTOP / TABLET LAYOUT (>= 769px) ========= */
+/*
+@media (min-width: 769px){
+
+  .hero-pin{ position: static; height: auto; min-height: 0; overflow: visible; }
+  .hero-sticky{ position: static; height: auto; }
+  .olh-wrap{
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+    max-width: min(1400px, 92vw);
+    margin-inline: auto;
+    padding-inline: clamp(16px, 3vw, 32px);
+    align-items: start;
+  }
+  .olh-title{
+    grid-column: 1 / -1;
+    justify-self: center;
+    text-align: center;
+    font-size: clamp(64px, 10.5vw, 168px);
+    line-height: .9;
+    margin: 0;
+  }
+  .olh-based-wrap{
+    grid-column: 9 / 12;
+    
+  }
+  .olh-loc.based{
+    display:flex; 
+  }
+  .olh-loc.city{
+    
+  }
+  .olh-services{
+    grid-column: 1 / 12;
+    
+  }
+  .olh-services li{ list-style: none; }
+
+  .olh-photo{
+    grid-column: 5 / 10;
+    justify-self: center;
+    width:56%;
+    max-width: 520px;
+  }
+  .olh-photo-media{ position: relative; width: 100%; aspect-ratio: 3 / 4; }
+  .olh-photo-media canvas,
+  .olh-photo-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit: cover; display:block; }
+
+  .olh-role{
+    position: static;
+    margin-top: clamp(8px, .9vw, 12px);
+    display:flex; justify-content:center; gap:.6em;
+    font-size: clamp(10px, 1vw, 12px);
+    letter-spacing: .45em;
+    mix-blend-mode: normal;
+  }
+
+
+  .rq-wrap{
+    grid-column: 9 / 13;
+    align-self: center;
+    justify-self: start;
+    margin-top: clamp(8px, 1vw, 16px);
+  }
+
+
+  .pixel-mosaic.desktop{
+    grid-column: 1 / 12;
+    width: 75%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    margin-top: clamp(10px, 1.4vw, 18px);
+    transform: none !important;
+    scale: 1 !important;
+  }
+  .pixel-mosaic.desktop .pixel-mosaic-img,
+  .pixel-mosaic.desktop .pixel-mosaic-img > canvas,
+  .pixel-mosaic.desktop .pixel-mosaic-img > img{
+    position:absolute; inset:0; width:100%; height:100%; display:block;
+  }
+  .pixel-mosaic.desktop .pixel-mosaic-overlay{ pointer-events:none; }
+
+
+  .hero-open{
+    grid-column: 2 / 12;
+    justify-self: center;
+    text-align: center;
+    font-size: clamp(11px, 1.1vw, 14px);
+    letter-spacing: .04em;
+    margin-top: clamp(10px, 1.2vw, 14px);
+    opacity: 1 !important;
+    clip-path: none !important;
+  }
+
+
+  .px-distance{
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: clamp(8px, 1vw, 14px);
+  }
+
+  .olh-loc.city,
+  .pixel-mosaic.desktop,
+  .hero-open{
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+}*/
+.lang-inline{
+  font-family: var(--font-text, system-ui);
+  mix-blend-mode: difference;
+  text-transform: uppercase;
+}
+
+/* Contenedor del efecto: superpone base/alt */
+.reactive-paragraph { position: relative; }
+.reactive-paragraph .rq-base,
+.reactive-paragraph .rq-alt {
+  margin: 0;
+}
+
+/* La capa “alt” debe estar encima ocupando el mismo espacio */
+.reactive-paragraph .rq-alt {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* la interacción se gestiona en el contenedor */
+}
+
+/* Acento para [[…]] */
+.rq-accent-paragraph {
+  color: var(--accent, #f2ff00);
+  cursor: zoom-in;
+  text-decoration: none;
+}
+
+/* Opcional: suaviza el círculo en Safari/Chrome */
+.reactive-paragraph .rq-alt {
+  will-change: clip-path;
+}
+.olh-link{
+  cursor: pointer;
 }

@@ -1,0 +1,1159 @@
+/* Lienzo */
+.wrap{
+  max-width: min(1400px, 92vw);
+  margin: clamp(8px, 6vw, 56px) auto;
+}
+
+/* COLLAGE: grid de 12 cols y filas elásticas */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0,1fr));
+  grid-auto-rows: 6vw;                 /* ALTURA DE CADA FILA -> CLAVE */
+  gap: clamp(14px, 1.4vw, 22px);
+  align-content: start;
+}
+
+/* Item base */
+.item{ position: relative; }
+.media{
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--ar, 4/3);
+  overflow: hidden;
+}
+.media :is(img,video,canvas){ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+
+/* POSICIONES (ajústalas a tu gusto) */
+.w1{ grid-column:  1 / span 2; grid-row:  1 / span 1; width:100%; padding-top: 2vh;} /* retrato izq alto */
+.w2{ grid-column:  3 / span 3; grid-row:  1 / span 3; width:90%; } /* top centro */
+.w3{ grid-column: 10 / span 4; grid-row:  1 / span 1; padding-top: 2vh;}
+.w4{ grid-column:  4 / span 4; grid-row:  3 / span 5; width:85%; padding-top: 16vh; }
+.w5{ grid-column:  11 / span 2; grid-row: 3 / span 1; width:90%; }
+.w6{ grid-column:  8 / span 4; grid-row: 3 / span 8; width:70%; padding-top: 12.5vh;}
+.w7{ grid-column: 7 / span 3; grid-row: 1 / span 2; width:80%;}
+.w8{ grid-column:  1 / span 4; grid-row:  4 / span 2; width:75%; padding-bottom: 2vh; padding-left: 2vh;}
+
+/* TABLET */
+@media (max-width: 1024px){
+  .grid{ grid-template-columns: repeat(8, minmax(0,1fr)); grid-auto-rows: 8.5vw; }
+  .w1{ grid-column: 1 / span 3; grid-row:  2 / span 6; }
+  .w2{ grid-column: 4 / span 4; grid-row:  1 / span 5; }
+  .w3{ grid-column: 4 / span 4; grid-row:  7 / span 4; }
+  .w4{ grid-column: 1 / span 4; grid-row: 10 / span 4; }
+  .w5{ grid-column: 1 / span 5; grid-row: 15 / span 5; }
+  .w6{ grid-column: 6 / span 3; grid-row: 15 / span 6; }
+  .w7{ grid-column: 6 / span 3; grid-row: 12 / span 3; }
+  .w8{ grid-column: 2 / span 4; grid-row:  9 / span 3; }
+}
+
+/* MÓVIL */
+@media (max-width: 640px){
+  .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); grid-auto-rows: 36vw; }
+  .w1{ grid-column:  1 / span 3; grid-row:  2 / span 3; width:120%; }           /* alto izq */
+  .w2{ grid-column:  5 / span 3; grid-row:  4 / span 4; width:150%; }            /* alto centro-izq */
+  .w3{ grid-column: 8 / span 3; grid-row:  2 / span 3; width:150%; }           /* alto dcha */
+  .w4{ grid-column:  2 / span 4; grid-row:  6 / span 5; width:130%; padding-top: 140px;}            /* pieza central protagonista */
+  .w5{ grid-column:  10 / span 2; grid-row:  5 / span 2; width:170%; }            /* medio izq */
+  .w6{ grid-column:  8 / span 4; grid-row:  6 / span 6; width:120%; padding-top: 150px;}            /* columna dcha vertical */
+  .w7{ grid-column:  1 / span 2; grid-row:  6 / span 3; width:180%; }            /* medio-bajo izq */
+  .w8{ grid-column:  4 / span 4; grid-row:  4 / span 3; width:130%; padding-top: 160px;}            /* base ancha izq */
+}
+
+/* Separador entre collage y sticky (para que el collage no quede tapado) */
+.spacer{ height: clamp(40px, 10vh, 120px); }
+
+/* ===== STICKY ZOOM ===== */
+.zoom{ height: 240vh; margin-top: clamp(24px, 5vw, 72px); }
+/* Pinned: la pantalla se queda fija; solo cambia la transform del stage */
+.travel{
+  position: relative;
+  height: 300svh;                /* recorrido del zoom */
+}
+
+/* el viewport fijo */
+.pin{
+  position: sticky;
+  top: 0;
+  height: 100svh;                /* usa svh para iOS */
+  overflow: clip;                /* evita “scroll interno” */
+}
+
+/* el mundo (collage) que acercamos con la cámara */
+.stage{
+  position: absolute;            /* <- clave: NO participa en el flujo */
+  inset: 0;                      /* ocupa todo el viewport del sticky */
+  transform-origin: 0 0;
+  will-change: transform;
+  backface-visibility: hidden;   /* menos parpadeo */
+}
+.stage img{ object-fit: cover; }
+
+/* Título estilo Hero */
+.title{
+  margin: 0;
+  position: absolute;
+  left: 0; right: 0; bottom: 6vh;
+  text-align: center;
+  font-family: var(--font-display, system-ui);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  line-height: .92;
+  font-size: clamp(42px, 12.5vw, 175px);
+  mix-blend-mode: difference;
+}
+.tight{ letter-spacing: -.06em; }
+
+/* región que incluye collage + overlay (mismo “viewport” visual) */
+.region{
+  position: relative;
+  min-height: 100vh;           /* da recorrido para que el zoom ocurra */
+}
+
+/* titulo grande encima del collage */
+.gridWrap{ position: relative; }
+.gridTitle{
+  position: absolute; inset: 0 auto auto 0;
+  width: 100%;
+  text-align: center;
+  z-index: 2; pointer-events: none;
+  font-family: var(--font-display, system-ui);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: .92;
+  font-size: clamp(56px, 14vw, 220px);
+  mix-blend-mode: difference;
+}
+.grid{ position: relative; z-index: 1; }
+
+/* overlay que “morféa” desde la tarjeta w4 y se queda en fullscreen */
+.overlay{
+  position: fixed; inset: 0; z-index: 40;
+  pointer-events: none;
+}
+.overlayStage{
+  position: absolute; inset: 0; width: 100vw; height: 100vh;
+}
+.overlayStage img{ object-fit: cover; }
+
+/* H1 durante el zoom */
+.title{
+  position: absolute; left: 0; right: 0; bottom: 6vh;
+  margin: 0; text-align: center;
+  font-family: var(--font-display, system-ui);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .92;
+  font-size: clamp(42px, 12.5vw, 175px);
+  mix-blend-mode: difference;
+}
+.tight{ letter-spacing: -.06em; }
+
+/* separador para fin del tramo del travel */
+.spacer{ height: clamp(24px, 18vh, 220px); }
+
+/* Split posterior (igual que tenías) */
+.seqWrap{ height: calc(160vh * var(--slides, 4)); margin-top: clamp(8px, 5vw, 64px); }
+.seqPin{ position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.frame{ position: absolute; inset: 0; will-change: transform, opacity, clip-path; }
+.frame img{ object-fit: cover; }
+.fadeMask{
+  position: absolute; inset: 0; pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+}
+
+.hiresWrap{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .28s ease;
+  will-change: opacity, transform;
+  contain: paint layout; 
+}
+
+/* El showcase queda por debajo hasta que se monte */
+.seqWrap { position: relative; z-index: 1; }
+
+/* dale pistas al rasterizado */
+.media img { image-rendering: auto; }
+.hiresWrap img { image-rendering: -webkit-optimize-contrast; }
+
+/* ===== SHOWCASE PINNED (fondo se desliza; HUD estático) ===== */
+.shcWrap{
+  position: relative;
+  height: calc(100svh + (var(--n, 1) - 1) * 125svh); /* al menos 100svh y ~125svh por slide extra */
+  z-index: 1;
+  background: #0b0b0b;
+}
+
+.shcPin{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* cada fondo ocupa todo el viewport; se apilan */
+.shcBg{
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+.shcBg img{
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
+  filter: saturate(1) contrast(1.02);
+}
+
+/* HUD fijo encima: izquierda (INFO) – centro (PixelImage) – derecha (AÑO) */
+.hud{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  pointer-events: none;            /* el HUD no bloquea el scroll */
+  z-index: 3;
+}
+
+.hudLeft, .hudRight{
+  position: relative;        /* para superponer los dos spans */
+  justify-self: start;
+  margin-left: 2.5vw;
+  font-family: var(--font-display, system-ui);
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: #fff;
+  mix-blend-mode: difference;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(2px);
+}
+.hudLeft  { justify-self: start;  margin-left: 2.5vw; }
+.hudRight { justify-self: end;    margin-right: 2.5vw; }
+
+.hudCenter{
+  pointer-events: auto;
+  justify-self: center;
+}
+.hudPixel{
+  width: min(46vw, 560px);
+  height: auto;
+}
+
+
+/* Recorrido del zoom (sube si quieres más “tiempo” de zoom) */
+.travel{
+  height: 520svh;   /* antes 260–420; subimos para tener un buen plateau */
+  position: relative;
+  z-index: 3;       /* por encima de lo que venga después */
+}
+
+/* El viewport fijo */
+.pin{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+}
+
+/* El “mundo” que acercamos */
+.stage{
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* HUD del tramo de ZOOM: overlay INDEPENDIENTE que NO escala */
+.zoomHud{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  z-index: 4;             /* por encima del fondo */
+  pointer-events: none;   /* no bloquea el scroll */
+}
+.hudLeft, .hudRight{
+  pointer-events: auto;
+  font-family: var(--font-display, system-ui);
+  font-size: clamp(14px, 1.2vw, 18px);
+  letter-spacing: .1em;
+  color: #fff;
+  mix-blend-mode: difference;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(2px);
+}
+.hudLeft  { justify-self: start; margin-left:  2.5vw; }
+.hudRight { justify-self: end;   margin-right: 2.5vw; }
+.hudCenter{ justify-self: center; }
+.hudPixel { width: min(46vw, 560px); height: auto; }
+
+/* ===== HOLD: w4 fullscreen quieta + HUD aparece ===== */
+.hold{
+  height: 140svh;           /* dura ~1.4 pantallas para el fade-in */
+  position: relative;
+  z-index: 2;
+}
+.holdPin{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+.holdBg{
+  object-fit: cover;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.holdHud{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.overlayHud{
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.hudCenter{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.splitWrap{
+  position: relative;
+  width: clamp(480px, 42vw, 600px);
+  aspect-ratio: 560/315;
+  overflow: hidden;
+}
+
+.splitMask{
+  position: absolute;
+  inset: 0;
+  will-change: clip-path;
+}
+
+.hudPixel{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hudLink {
+  display: inline-block;
+  cursor: pointer;
+  /* si prefieres ocultar la flecha del SO, descomenta:
+     cursor: none; 
+  */
+}
+
+.cursorRing {
+  position: fixed;
+  top: 0; left: 0;
+  width: 88px;
+  height: 88px;
+  border: 2px solid var(--accent);
+  border-radius: 9999px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: rgba(0,0,0,0.18);         /* relleno suave como el ejemplo */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25) inset;
+  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+/* Badge (sin ring) que sigue al cursor 
+.cursorBadge {
+  position: fixed;
+  top: 0; left: 0;
+  width: 88px;
+  height: 88px;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  background: radial-gradient(120px 120px at 40% 35%, rgba(255,255,255,0.06), rgba(0,0,0,0.35));
+  border: 1px solid var(--accent); 
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.22),
+    inset 0 8px 18px rgba(255,255,255,.04);
+  backdrop-filter: blur(2px);
+}
+*/
+/* Badge que sustituye al ring */
+.cursorBadge {
+  position: fixed;       /* respecto al viewport */
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  will-change: transform, opacity;
+  z-index: 9999;
+  width: 84px;
+  height: 84px;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse at 40% 40%, rgba(255,255,255,.08), rgba(0,0,0,.35));
+  border: 2px solid var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: .2px;
+  user-select: none;
+}
+
+.cursorLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: .2px;
+  user-select: none;
+  opacity: .95;
+}
+
+.hudLink {
+  position: absolute;
+  inset: 0;
+  z-index: 4;             /* por encima de las imágenes del HUD */
+  pointer-events: auto;   /* recibe click */
+  /* no pintamos nada: el badge visual puede ser otro elemento que siga al cursor */
+}
+
+/* Área clicable exacta (no roba layout) */
+.hudHit {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: auto;
+  cursor: none;               /* ocultar cursor SO dentro (opcional) */
+}
+
+.hudCenter,
+.splitWrap,
+.splitMask,
+.hudPixel { pointer-events: none; }
+
+/* Área interactiva EXACTA (560×340) centrada en pantalla */
+.hudHitCenter{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 560px;
+  height: 340px;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  pointer-events: auto;
+  cursor: none; /* oculta cursor del SO para que destaque el badge */
+}
+
+.cursorLabel{
+  font-size: 12px; font-weight: 500; color: #fff;
+  letter-spacing: .2px; user-select: none; opacity: .95;
+}
+
+/* Oculta tu cursor ring global mientras estás sobre la imagen central */
+:global(html.hide-global-ring .cursor-ring),
+:global(html.hide-global-ring [data-cursor-ring]),
+:global(html.hide-global-ring .cursorRing),
+:global(html.hide-global-ring [class*="cursor-ring"]) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: scale(.9) !important;
+  transition: opacity .12s ease, transform .12s ease !important;
+}
+/* Por si el ring global usa pseudo-elementos */
+:global(html.hide-global-ring::before),
+:global(html.hide-global-ring::after),
+:global(body.hide-global-ring::before),
+:global(body.hide-global-ring::after){
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* área clicable centrada */
+.hudHitCenter{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 560px;
+  height: 340px;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  pointer-events: auto;
+  cursor: none;            /* oculta cursor nativo dentro del HUD */
+}
+
+/* Leyenda fija para el slide 0 (zoom) */
+.captionFix{
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 12px;
+  padding: 18px 22px;
+  pointer-events: none;        /* no bloquea el HUD ni el scroll */
+  z-index: 20;                 /* por encima del fondo y debajo del cursor/badge */
+  background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0));
+}
+
+.capLeft{
+  justify-self: start;
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: .2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+
+.capRight{
+  justify-self: end;
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 500;
+  color: #fff;
+  opacity: .9;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+.hudCaption{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 12px;
+  padding: 18px 22px;
+  pointer-events: none;         /* no bloquea clics (header, etc.) */
+  z-index: 100000;              /* por encima de fondos/HUD */
+}
+
+.hudCapLeft{
+  justify-self: start;
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: .2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+
+.hudCapRight{
+  justify-self: end;
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 500;
+  color: #fff;
+  opacity: .95;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+
+/* capa que cubre exactamente la imagen centrada (560×340) */
+.hudCaptionIn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 12px 14px;
+  pointer-events: none;      /* no bloquea clicks del link */
+  z-index: 3;                /* por encima de las imágenes del HUD */
+}
+
+.hudCapL,
+.hudCapR {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  font-weight: 600;
+  letter-spacing: .2px;
+  user-select: none;
+}
+
+.hudCapL { font-size: 16px; }
+.hudCapR { font-size: 15px; opacity: .95; }
+
+:root { --shc-gutter: 20px; }
+
+.zoomCap{
+  position: absolute;              /* anclado al contenedor sticky (.pin) */
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 5;                      /* por encima del collage */
+  pointer-events: none;            /* no bloquea scroll ni clicks */
+  padding: 12px 14px;
+}
+
+.zoomCapL, .zoomCapR{
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.3);
+  user-select: none;
+}
+
+.zoomCapL{ font-size: 16px; }
+.zoomCapR{ font-size: 15px; opacity: .95; }
+
+/* tamaño del HUD (ajusta si cambias el size) */
+:root{
+  --hudW: 560px;
+  --hudH: 340px;
+}
+
+.projPanel{
+  position: fixed;          /* fondos ocupan 100vh: el panel también */
+  top: 0;
+  height: 100vh;
+  width: min(40vw, 520px);
+  background: rgba(0,0,0,.58);
+  backdrop-filter: blur(2px);
+  color: #fff;
+  z-index: 30;              /* por encima de fondos y HUD */
+  display: flex;
+  align-items: center;
+}
+.projPanel.left { left: 0; }
+.projPanel.right { right: 0; }
+
+.panelInner{
+  display: grid;
+  gap: .8rem;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.panelTitle{
+  margin: 0 0 .25rem 0;
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+
+.panelMeta{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .25rem 1rem;
+  align-items: baseline;
+  opacity: .9;
+}
+.metaLabel{ opacity: .7; font-size: .9em; }
+.metaValue{ font-size: 1em; }
+
+.panelLink{
+  margin-top: .6rem;
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.panelLink:hover{ border-bottom-color: #fff; }
+
+.panelClose{
+  position: absolute;
+  top: 10px; 
+  inset-inline-end: 12px;         /* right en LTR, left en RTL */
+  width: 36px; height: 36px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  cursor: pointer;
+}
+
+.hudHitCenter{
+  position: absolute;
+  inset: 0;
+  width: 560px;
+  height: 340px;
+  margin: auto;                 /* centra dentro del overlay */
+  z-index: 6;
+  background: transparent;
+  pointer-events: auto;
+  cursor: none;                  /* ocultamos cursor nativo para que se note el badge */
+}
+.cursorBadge{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  width: 84px; height: 84px;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse at 40% 40%, rgba(255,255,255,.08), rgba(0,0,0,.35));
+  border: 2px solid var(--accent);
+  display: grid; place-items: center;
+  color: #fff; font-weight: 600; letter-spacing: .2px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.22), inset 0 8px 18px rgba(255,255,255,.04);
+  backdrop-filter: blur(2px);
+}
+
+.cursorLabel{
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: .2px;
+  user-select: none;
+  opacity: .95;
+}
+
+/* CTA bajo la imagen */
+.hudCtaRow{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+}
+
+
+/* Asegura que imágenes/máscara no bloqueen eventos; el hit/cta sí los reciben */
+.hudCenter,
+.splitWrap,
+.splitMask,
+.hudPixel{
+  pointer-events: none;
+}
+.hudCenter{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;        /* solo los hijos marcan eventos */
+  z-index: 5;
+}
+
+/* Caja ancla EXACTA de la imagen */
+.hudMedia{
+  position: relative;
+  pointer-events: auto;        /* aquí sí capturamos eventos */
+  transform: 1.28 ease
+}
+
+/* Imagen y máscara no bloquean eventos */
+.hudPixel,
+.splitWrap,
+.splitMask{ pointer-events: none; }
+
+/* HITBOX alineado 1:1 con la imagen */
+.hudHit{
+  position: absolute;
+  inset: 0;            /* ocupa EXACTAMENTE 560x340 */
+  cursor: none;        /* ocultar cursor nativo */
+  z-index: 6;
+  background: transparent;
+}
+
+.cursorLabel{ font-size: 12px; opacity: .95; }
+
+/* CTA: justo debajo del cuadro de 560x340 */
+.hudCta{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+  letter-spacing: .02em;
+  background: radial-gradient(ellipse at 40% 40%, rgba(36, 36, 36, 0.434), rgba(0, 0, 0, 0.566));
+  box-shadow: 0 8px 24px rgba(0,0,0,.22), inset 0 8px 18px rgba(255,255,255,.04);
+  width: 100%;
+}
+.hudCta::after{
+  content: ".";
+  color: #f2ff00;
+  opacity: 0;
+  margin-left: .35em;
+  transition: opacity .18s ease;
+}
+.hudCta:hover::after,
+.hudCta:focus-visible::after{ opacity: 1; }
+
+/* Panel: pegado EXACTO al cuadro */
+.hudPanel{
+  position: absolute;
+  inset: 0;                   /* mismo tamaño que la imagen */
+  z-index: 8;
+  display: none;
+  background: rgba(0,0,0,.58);
+}
+.hudPanel.open{ display: block; }
+
+.hudPanelInner{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 18px;
+}
+.alignLeft  .hudPanelInner{ justify-content: flex-start; }
+.alignRight .hudPanelInner{ justify-content: flex-end; }
+
+.hpiTitle{ font-size: clamp(18px, 2.2vw, 24px); font-weight: 600; margin-bottom: 6px; }
+.hpiYear { font-size: clamp(14px, 1.6vw, 16px); opacity: .9; }
+.hpiLink{
+  display: inline-block; margin-top: 10px; color: #fff; text-decoration: none;
+}
+.hpiLink::after{
+  content: "."; color: #f2ff00; margin-left: .35em; opacity: 0; transition: opacity .18s ease;
+}
+.hpiLink:hover::after{ opacity: 1; }
+
+.spPanel{
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: 45.6vw;
+  height:1025px;                 /* ocupa media pantalla */
+  background: rgba(0,0,0,.56); /* negro translúcido */
+  color: #fff;
+  display: grid;
+  align-content: center;
+  pointer-events: auto;
+  z-index: 5;
+  transform: translateX(0);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .22s ease, visibility .22s ease, transform .32s ease;
+}
+.spPanel.left{  left: 0;  transform: translateX(-6%); }
+.spPanel.right{ right: 0; transform: translateX( 6%); }
+
+.spPanel.open{
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+.spInner{
+  padding: clamp(16px, 3vw, 36px);
+  display: grid;
+  gap: clamp(10px, 1.2vw, 18px);
+  max-width: 40ch;
+}
+.spTitle{
+  margin: 0;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 600;
+}
+.spMeta{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  align-items: baseline;
+}
+.spLabel{ opacity: .8; }
+.spValue{ font-weight: 500; }
+.spLink{
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  height: 10vh;
+  align-content: end;
+}
+.spLink:hover{ border-bottom-color: var(--accent); }
+
+.spClose{
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+/* Contenido del panel centrado */
+.spInnerCentered{
+  padding: clamp(16px, 3vw, 36px);
+  display: grid;
+  gap: clamp(8px, 1vw, 14px);
+  max-width: 46ch;            /* más estrecho para textos largos */
+  margin-inline: auto;
+  place-items: start;         /* centra todo */
+  text-align: start;          /* centra texto */
+}
+
+/* párrafos del panel más pequeños y cómodos de leer */
+.spP{
+  margin: 0;
+  font-size: clamp(12px, 1.05vw, 15px); /* más pequeño que antes */
+  line-height: 1.55;
+  opacity: .95;
+}
+
+/* título del panel centrado (si no lo estaba) */
+.spTitle{
+  margin: 0 0 .25rem 0;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ====== [[...]] → modo acento + lupa ====== */
+/* OJO: como viene de innerHTML, usa selector global */
+:global(.accentZoom){
+  color: var(--accent);
+  cursor: zoom-in;             /* “lupa” */
+  display: inline-block;
+  transition: transform .18s ease, text-shadow .18s ease;
+  text-decoration: none;
+}
+:global(.accentZoom:hover),
+:global(.accentZoom:focus){
+  transform: scale(1.025);
+  text-shadow: 0 0 0.45em color-mix(in oklab, var(--accent) 60%, transparent);
+  outline: none;
+}
+.spInner{
+  /* antes: padding + grid */
+  max-width: 70ch;              /* 60–70ch */
+  line-height: 1.56;            /* 1.5–1.6 */
+}
+
+.spP{
+  font-size: clamp(13px, 1.05vw, 15px); /* -1 punto aprox */
+  letter-spacing: .01em;                /* mono legible */
+  opacity: .96;
+}
+
+/* --- Sombra/“blend” del cuadro central en zoom --- */
+.hudMedia{
+  position: relative;
+  pointer-events: auto;
+  transition: transform .36s cubic-bezier(.22,.61,.36,1),
+              filter .28s ease,
+              box-shadow .28s ease;
+  /* 20–30% menos opaco y algo más de blur */
+  box-shadow: 0 26px 96px rgba(0,0,0,.24);
+}
+@media (prefers-reduced-motion: reduce){
+  .hudMedia{ transition: none; }
+}
+
+/* desplazamientos suaves al abrir/cerrar panel */
+.nudgeLeft{ transform: translateX(-200px);}
+.nudgeRight{ transform: translateX(200px);}
+
+/* --- Micro-transición del panel (stagger del contenido) --- */
+.spPanel{
+  transition: opacity .28s ease, visibility .28s ease, transform .36s cubic-bezier(.22,.61,.36,1);
+}
+.spPanel .spInner > *{
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .32s ease, transform .36s cubic-bezier(.22,.61,.36,1);
+}
+.spPanel.open .spInner > *{
+  opacity: 1;
+  transform: translateY(0);
+}
+.spPanel.open .spInner > *:nth-child(1){ transition-delay: .02s; }
+.spPanel.open .spInner > *:nth-child(2){ transition-delay: .06s; }
+.spPanel.open .spInner > *:nth-child(3){ transition-delay: .10s; }
+.spPanel.open .spInner > *:nth-child(4){ transition-delay: .14s; }
+
+/* --- Micro-transición label del botón (View ⇄ Hidden) --- */
+.hudCta{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+  letter-spacing: .02em;
+  background: radial-gradient(ellipse at 40% 40%, rgba(36,36,36,.43), rgba(0,0,0,.56));
+  box-shadow: 0 18px 54px rgba(0,0,0,.22), inset 0 8px 18px rgba(255,255,255,.04);
+  width: 100%;
+  overflow: hidden;
+}
+.hudCtaLabel{
+  position: relative;
+  display: inline-block;
+  min-width: 10ch;
+  height: 1.25em;
+}
+.hudCtaLabel > span{
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  transition: opacity .22s ease, transform .28s cubic-bezier(.22,.61,.36,1);
+}
+.hudCtaLabel > .label-on  { opacity: 1; transform: translateY(0); }
+.hudCtaLabel > .label-off { opacity: 0; transform: translateY(12px); }
+
+.hudCta[data-open="1"] .label-on  { opacity: 0; transform: translateY(-12px); }
+.hudCta[data-open="1"] .label-off { opacity: 1; transform: translateY(0); }
+
+/* =========================
+   1) NUDGE EN EJE Y
+   ========================= */
+
+
+/* ya tienes transición en .hudMedia (transform, filter, box-shadow) */
+
+
+/* =========================
+   2) RESPONSIVE EXTRAS
+   ========================= */
+
+/* ——— Tablet ≤ 1024px ——— */
+@media (max-width: 1024px){
+  
+  /* HUD un poco más compacto */
+  .hudPixel{ width: min(58vw, 540px); }
+
+  .hudLeft,.hudRight{
+    font-size: clamp(12px, 1.5vw, 14px);
+    padding: .6rem .9rem;
+  }
+
+  /* El panel puede seguir entrando en X en desktop/tablet,
+     pero suavizamos el desplazamiento y la sombra del cuadro */
+  .hudMedia{
+    box-shadow: 0 22px 80px rgba(0,0,0,.22);
+  }
+}
+
+/* ——— Móvil ≤ 640px ——— */
+@media (max-width: 640px){
+  .grid{
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0,1fr));
+  grid-auto-rows: 10vw;                  /* antes 6vw → más denso */
+  gap: clamp(14px, 1.4vw, 22px);
+  align-content: start;
+  }
+  .gridWrap{ position: relative; }
+
+/* Título centrado vertical + horizontal sobre el collage */
+.gridTitle{
+  position: absolute;
+  left: 0; right: 0;
+  top: 25%;
+  transform: translateY(-50%);  /* centra verticalmente */
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+  font-family: var(--font-display, system-ui);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: .9;
+  letter-spacing: 0.02em;
+  font-size: clamp(84px, 20vw, 260px);   /* ↑ ligeramente mayor */
+  mix-blend-mode: difference;
+}
+  /* HUD: dejamos solo centro visible y más ancho */
+  :root{
+  /* cuánto se desplaza la imagen central al abrir panel */
+  --nudgeY: clamp(48px, 9vh, 160px);
+}
+
+/* Antes empujaban en X. Ahora en Y. Mantengo nombres para no tocar JS */
+/* desplazamientos suaves al abrir/cerrar panel */
+.nudgeLeft{ transform: translateY(500px);}
+.nudgeRight{ transform: translateY(500px);}
+.nudgeLeft  { transform: translateY(calc(-1 * var(--nudgeY))); }
+.nudgeRight { transform: translateY(var(--nudgeY)); }
+
+:root{
+  --nudgeY: clamp(48px, 9vh, 60px); /* ajusta a tu gusto */
+}
+
+/* Ahora ambos empujan hacia arriba */
+.nudgeLeft,
+.nudgeRight{
+  transform: translateY(calc(-4.5 * var(--nudgeY)));
+}
+  
+  .hudLeft,.hudRight{ display:none; }
+  .hudPixel{ width: min(86vw, 620px); }
+
+  /* La imagen central empuja menos al abrir/cerrar */
+  :root{ --nudgeY: clamp(28px, 7vh, 90px); }
+
+  /* Panel lateral → bottom-sheet */
+  .spPanel{
+    left: 0; right: 0;
+    width: 100vw;
+    height: 66svh;          /* hoja inferior */
+    bottom: 0;
+    top: auto;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+
+    /* animación vertical (Y) en móvil */
+    transform: translateY(10%);
+    opacity: 0;
+    visibility: hidden;
+  }
+  .spPanel.left,
+  .spPanel.right{
+    transform: translateY(10%);  /* anulamos traslados X en móvil */
+  }
+  .spPanel.open{
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Contenido del panel, tipografías y paddings más legibles */
+  .spInner,
+  .spInnerCentered{
+    max-width: 86vw;
+    padding: 16px 14px 18px;
+    gap: 10px;
+    text-align: left;
+  }
+  .spTitle{ font-size: clamp(18px, 5.4vw, 22px); text-align: left; }
+  .spP{ font-size: clamp(13px, 3.6vw, 15px); line-height: 1.55; letter-spacing: .01em; }
+  .spMeta{ gap: 4px 10px; }
+
+  /* Cerrar más accesible */
+  .spClose{
+    top: 8px; right: 10px;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.08);
+  }
+}
+.main {
+  position: relative;   /* NO sticky */
+  min-height: 100%;
+  background: var(--bg, #101010); /* si necesitas fondo oscuro, ponlo aquí */
+}
+.mediaLink:focus-visible .media,
+.mediaLink:hover .media {
+  /* feedback sutil al hover/focus */
+  transform: translateZ(0);
+  filter: brightness(1.02);
+  cursor: pointer;
+}

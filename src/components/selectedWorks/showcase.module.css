@@ -1,0 +1,381 @@
+/* Nunca negro por debajo */
+.shcWrap{
+  position: relative;
+  /* altura suficiente y estable para todos los slides */
+  height: calc(var(--n, 1) * 120svh);
+  z-index: 1;
+  background: transparent;
+}
+.shcPin{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+}
+.shcBg{ position: absolute; inset: 0; will-change: transform; }
+.shcBg img{ object-fit: cover; image-rendering: optimizeQuality;}
+
+/* Capa de HUDs; cada slide pinta el suyo y se solapan */
+.hudStack{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* HUD base (centrado y pegado a viewport) */
+.hud{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  pointer-events: none;
+}
+
+.hudLeft,.hudRight{
+  pointer-events: none;
+  justify-self: start;
+  margin-left: 2.5vw;
+  font-family: var(--font-display, system-ui);
+  font-size: clamp(14px, 1.2vw, 18px);
+  letter-spacing: .1em;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.25);
+  padding: 1rem 1.25rem;
+  backdrop-filter: blur(2px);
+  mix-blend-mode: difference;
+}
+.hudRight{
+  justify-self: end;
+  margin-left: 0;
+  margin-right: 2.5vw;
+}
+
+.hudCenter{ justify-self: center; pointer-events:auto; }
+.hudPixel{ width: clamp(280px,46vw,560px); height: auto; }
+
+.captionWrap{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 12px;
+  padding: 18px 22px;
+  pointer-events: none;             /* no bloquea scroll/clicks */
+  background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0));
+}
+/* textos */
+.capLeft{
+  justify-self: start;
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: .2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+.capRight{
+  justify-self: end;
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 500;
+  color: #fff;
+  opacity: .9;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+.shcBg {
+  position: relative;
+}
+
+.shcPin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* Cada fondo se posiciona y se anima con y */
+.shcBg {
+  position: absolute;
+  inset: 0;
+}
+
+/* Marco con margen interior (“inset/gutter”) */
+:root { --shc-gutter: clamp(12px, 4vw, 28px); }
+
+/* El caption va dentro del frame → pegado al fondo */
+.shcCap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 12px 14px;
+  pointer-events: none;
+  z-index: 1;
+  /*box-shadow: 0 8px 12px rgba(218, 218, 218, 0.22), inset 0 8px 24px rgba(0, 0, 0, 0.134);*/
+}
+
+.shcCapL, .shcCapR {
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  user-select: none;
+}
+.shcCapL { font-size: 16px; }
+.shcCapR { font-size: 15px; opacity: .95; }
+/* Contenedor sticky del fondo */
+.shcWrap{ position: relative; }
+.shcPin{ position: sticky; top: 0; height: 100vh; overflow: hidden; z-index: 200; }
+
+/* Fondo */
+.shcBg{
+  position: absolute;
+  inset: 0;
+}
+
+/* === Panel dentro del showcase === */
+.spPanel{
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 50vw;                 /* ocupa media pantalla */
+  background: rgba(0,0,0,.56); /* negro translúcido */
+  color: #fff;
+  display: grid;
+  align-content: center;
+  pointer-events: auto;
+  z-index: 5;
+  transform: translateX(0);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .22s ease, visibility .22s ease, transform .32s ease;
+}
+.spPanel.left{  left: 0;  transform: translateX(-6%); }
+.spPanel.right{ right: 0; transform: translateX( 6%); }
+
+.spPanel.open{
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.spInner{
+  padding: clamp(16px, 3vw, 36px);
+  display: grid;
+  gap: clamp(10px, 1.2vw, 18px);
+  max-width: 40ch;
+}
+.spTitle{
+  margin: 0;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 600;
+}
+.spMeta{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  align-items: baseline;
+}
+.spLabel{ opacity: .8; }
+.spValue{ font-weight: 500; }
+.spLink{
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  height: 10vh;
+  align-content: end;
+}
+.spLink:hover{ border-bottom-color: var(--accent); }
+
+.spClose{
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+.shcFrame{
+ 
+  inset: var(--shc-gutter);
+  overflow: hidden;
+}
+.shcBg{ position: absolute; inset: 0; }
+
+/* Contenido del panel centrado */
+.spInnerCentered{
+  padding: clamp(16px, 3vw, 36px);
+  display: grid;
+  gap: clamp(8px, 1vw, 14px);
+  max-width: 46ch;            /* más estrecho para textos largos */
+  margin-inline: auto;
+  place-items: start;         /* centra todo */
+  text-align: start;          /* centra texto */
+}
+
+/* párrafos del panel más pequeños y cómodos de leer */
+.spP{
+  margin: 0;
+  font-size: clamp(12px, 1.05vw, 15px); /* más pequeño que antes */
+  line-height: 1.55;
+  opacity: .95;
+}
+
+/* título del panel centrado (si no lo estaba) */
+.spTitle{
+  margin: 0 0 .25rem 0;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ====== [[...]] → modo acento + lupa ====== */
+/* OJO: como viene de innerHTML, usa selector global */
+:global(.accentZoom){
+  color: var(--accent);
+  cursor: zoom-in;             /* “lupa” */
+  display: inline-block;
+  transition: transform .18s ease, text-shadow .18s ease;
+  text-decoration: none;
+}
+:global(.accentZoom:hover),
+:global(.accentZoom:focus){
+  transform: scale(1.025);
+  text-shadow: 0 0 0.45em color-mix(in oklab, var(--accent) 60%, transparent);
+  outline: none;
+}
+/* Legibilidad */
+.spPanel .spInner{
+  max-width: 70ch;
+  line-height: 1.56;
+}
+.spPanel .spP{
+  font-size: clamp(13px, 1.05vw, 15px);
+  letter-spacing: .01em;
+}
+
+/* Stagger aparición panel */
+.spPanel .spInner > *{
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .32s ease, transform .36s cubic-bezier(.22,.61,.36,1);
+}
+.spPanel.open .spInner > *{
+  opacity: 1;
+  transform: translateY(0);
+}
+.spPanel.open .spInner > *:nth-child(1){ transition-delay: .02s; }
+.spPanel.open .spInner > *:nth-child(2){ transition-delay: .06s; }
+.spPanel.open .spInner > *:nth-child(3){ transition-delay: .10s; }
+.spPanel.open .spInner > *:nth-child(4){ transition-delay: .14s; }
+
+/* ====== MOBILE TUNING ====== */
+
+/* Tablet ≤ 1024px */
+@media (max-width: 1024px){
+  :root { --shc-gutter: clamp(10px, 3.5vw, 22px); }
+
+  .hud{
+    grid-template-columns: 1fr auto 1fr;
+  }
+  .hudLeft,.hudRight{
+    font-size: clamp(12px, 1.6vw, 14px);
+    padding: .6rem .8rem;
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
+  .hudPixel{ width: clamp(220px, 54vw, 420px); }
+
+  .capLeft{ font-size: clamp(13px, 1.8vw, 16px); }
+  .capRight{ font-size: clamp(12px, 1.6vw, 15px); }
+}
+
+/* Móvil ≤ 640px: layout compacto y legible */
+@media (max-width: 640px){
+  /* Cada slide un poco menos alto para evitar scroll eterno */
+  .shcWrap{ height: calc(var(--n, 1) * 105svh); }
+
+  :root { --shc-gutter: clamp(8px, 4vw, 16px); }
+
+  /* HUD: deja solo la info central (imagen) y mete caption abajo */
+  .hud{
+    grid-template-columns: 1fr;
+    align-items: end;
+    padding-block: 8px;
+  }
+  .hudLeft,.hudRight{ display: none; }
+  .hudCenter{ justify-self: center; }
+  .hudPixel{ width: clamp(220px, 80vw, 520px); }
+
+  /* Caption dentro del frame, más grande y con mejor toque */
+  .shcCap{
+    padding: 10px 12px;
+  }
+  .shcCapL{ font-size: 14px; }
+  .shcCapR{ font-size: 13px; }
+
+  /* Panel: de lateral → a bottom-sheet (100% ancho, 65vh alto) */
+  .spPanel{
+    left: 0; right: 0;
+    width: 95vw;
+    height: 75svh;
+    bottom: 0; top: auto;
+    transform: translateY(8%);
+    background: rgba(0,0,0,.66);
+  }
+  .spPanel.left,
+  .spPanel.right{ transform: translateY(8%); } /* neutraliza traslados laterales */
+  .spPanel.open{ transform: translateY(0); }
+
+  .spInner,
+  .spInnerCentered{
+    max-width: 84vw;
+    margin-inline: auto;
+    gap: 10px;
+    padding: 16px 14px 18px;
+    text-align: left;
+  }
+
+  .spTitle{ font-size: clamp(18px, 5.6vw, 22px); text-align: left; }
+  .spP{
+    font-size: clamp(13px, 3.7vw, 15px);
+    line-height: 1.55;
+    letter-spacing: .01em;
+  }
+  .spMeta{ gap: 4px 10px; }
+  .spLabel{ font-size: .95em; }
+  .spValue{ font-size: 1em; }
+
+  .spLink{
+    height: auto;
+    display: inline-block;
+    margin-top:40px;
+    border-bottom-color: transparent;
+    font-size: .95em;
+  }
+
+  .spClose{
+    top: 8px; right: 8px;
+    width: 36px; height: 36px;
+    line-height: 36px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.08);
+  }
+}
+
+/* Mini (≤ 380px): último ajuste fino */
+@media (max-width: 380px){
+  .hudPixel{ width: 88vw; }
+  .spInner,
+  .spInnerCentered{ max-width: 90vw; }
+  .spP{ font-size: 13px; }
+}
+.main {
+  position: relative;   /* NO sticky */
+  min-height: 100%;
+  background: var(--bg, #101010); /* si necesitas fondo oscuro, ponlo aquí */
+}

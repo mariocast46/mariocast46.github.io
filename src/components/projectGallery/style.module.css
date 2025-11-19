@@ -1,0 +1,187 @@
+.wrap{
+  --gap: clamp(18px, 3vw, 40px);
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(30px, 6vw, 80px) clamp(18px, 3vw, 36px);
+  color: var(--fg);
+  background: var(--bg);
+  display: grid;
+  gap: var(--gap);
+}
+
+
+.sticky{
+  position: absolute;
+  top: clamp(40px, 60vh, 200px); /* ajusta donde “se queda” */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  
+}
+.title-works{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.label{
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: clamp(12px, 1.1vw, 14px);
+  letter-spacing: .45em;
+  text-transform: uppercase;
+  align-items: center;
+  justify-content: center;
+  opacity: .85;
+}
+
+.frame{
+  display: grid;
+  gap: clamp(8px, 1.4vw, 16px);
+}
+
+.hero{
+  width: 80%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  user-select: none;
+}
+
+.caption{
+  font-family: var(--font-text);
+  font-size: clamp(12px, 1vw, 14px);
+  opacity: .75;
+}
+
+/* Columna derecha: lista */
+.right{
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 920px){
+  .wrap{
+    grid-template-columns: 1fr;
+  }
+  .sticky{
+    position: relative;
+    top: 0;
+  }
+}
+/* ===== CTA “See more” ===== */
+.ctaRow{
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;                 /* sin subrayado */
+  border-top: 1px solid rgb(237, 237, 237);
+  border-bottom: 1px solid rgb(237, 237, 237);
+  padding: clamp(2px, 5vw, 64px) 0;      /* igual que .row */
+  cursor: pointer;
+  font-size:clamp(28px,7vw,28px);
+  font-weight:200;
+  line-height:1;
+}
+
+/* nunca subrayado (todas las variantes del <a>) */
+.ctaRow:link,
+.ctaRow:visited,
+.ctaRow:hover,
+.ctaRow:active{
+  text-decoration: none;
+}
+
+/* usa el mismo título que las filas */
+.ctaRow .title{
+  /* hereda font-family/size/line-height de .title */
+  margin: 0 auto;
+  text-align: center;
+  grid-template-columns: minmax(0,1fr) 0 minmax(0,1fr); /* sin hueco central */
+  gap: 0;
+}
+
+/* centramos el texto usando la columna izquierda expandida a todo el ancho */
+.ctaRow .left{
+  grid-column: 1 / 4;     /* ocupa las 3 columnas de la grid */
+  justify-self: center;   /* lo centramos */
+}
+
+/* el centro y la flecha no hacen falta aquí */
+.ctaRow .center{ display: none !important; }
+.ctaRow .right { display: none !important; }
+
+/* desactiva cualquier efecto de apertura al hover en el CTA */
+.ctaRow:hover .title{
+  grid-template-columns: minmax(0,1fr) 0 minmax(0,1fr);
+  gap: 0;
+}
+.ctaRow:hover .left,
+.ctaRow:hover .right{
+  transform: none;
+}
+/* PUNTO amarillo literal (.) como en el header */
+.title::after{
+  content: "";
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+
+/* CTA */
+.ctaRow{ text-decoration: none; color: inherit; display:block; }
+.ctaRow .title::after{
+  content: ".";
+  color: #f2ff00;                 /* el mismo color del header */
+  margin-left: .35em;             /* separa el punto del texto */
+  opacity: 0;
+}
+.ctaRow:hover .title::after,
+.ctaRow:focus-visible .title::after{
+  opacity: 1;
+}
+
+/* Opcional: también para cada fila de work (si lo quieres igual) */
+.row .title::after{
+  content: ".";
+  color: #f2ff00;
+  margin-left: .35em;
+  opacity: 0;
+}
+.row:hover .title::after,
+.row:focus-within .title::after{
+  opacity: 1;
+}
+
+.standalone {
+  display: block;              /* quita la grid de .title */
+  margin: 0 auto;              /* centra en el contenedor */
+  text-align: center;
+  max-width: 100%;
+  font-size: clamp(42px, 9vw, 40px); /* mismo tamaño que las filas */
+  line-height: 1;
+  /* aseguramos que no hereda grid de .title */
+  grid-template-columns: none !important;
+  gap: 0 !important;
+}
+
+/* CTA: centra su contenido y desactiva efectos de hover de filas */
+.ctaRow{
+  display: flex;               /* centra el contenido horizontal/vertical */
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.ctaRow .title.standalone::after{
+  content: ".";                /* puntito amarillo como en el header */
+  color: #f2ff00;
+  margin-left: .35em;
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+.ctaRow:hover .title.standalone::after,
+.ctaRow:focus-visible .title.standalone::after{
+  opacity: 1;
+}

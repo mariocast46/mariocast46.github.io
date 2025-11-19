@@ -1,0 +1,99 @@
+{
+  "nav": { "about": "SOBRE MÍ", "works": "PROYECTOS", "services": "SERVICIOS", "contact": "CONTACTO" },
+  "hero": {
+    "titleLeft": "DEVELOPER",
+    "titleRight": "CREATIVO",
+    "based": "SEDE",
+    "in": "EN",
+    "spain": "ESPAÑA",
+    "services": ["DISEÑO WEB","EXPERIENCIA UX/UI", "DESARROLLO WEB"],
+    "open":"Abierto a ofertas y colaboraciones",
+    "quote1": "Lo bueno es el [[enemigo]] de lo excelente",
+    "quote2":"Lo bueno es el [[comienzo]] de lo excelente",
+    "job1":"DEVELOPER",
+    "job2":"FRONT-END",
+    "city":"VALENCIA"
+  },
+  "distance": { "prefix": "¿Colaboramos? Estamos a", "suffix": "píxeles." },
+  "works":{
+    "heading":"PROYECTOS SELECCIONADOS",
+    "all":"VER MÁS",
+    "title":"PROYECTOS",
+    "site":"Ver web",
+    "details":"Ver detalles",
+    "detailsoff":"Ocultar detalles",
+    "work1":{
+      "h3":"FEDACV",
+      "paragraph1":"Para [[FEDACV]] diseñamos un sitio web corporativo moderno y accesible que centraliza calendarios, reglamentos, licencias, resultados y noticias.",
+      "paragraph2":"Su objetivo digital era ofrecer información clara, fiable y siempre actualizada para pilotos, clubes, oficiales y aficionados, facilitando trámites y mejorando la comunicación con toda la comunidad.",
+      "paragraph3":"La interfaz prioriza la estructura y la usabilidad para navegar un contenido técnico extenso, a la vez que proyecta una identidad sólida que combina profesionalidad con pasión por el motor.",
+      "collab1": "[[Colaboradores:]]",
+      "collab2": "[[Colaboradores:]] Solo yo"
+    },
+    "work2":{
+      "h3":"Santiago Sevillano",
+      "paragraph1":"Para [[Santiago Sevillano Studio]] creamos un sitio web en inglés, elegante y altamente visual que organiza su equipo multidisciplinar y su portfolio.",
+      "paragraph2":"Su objetivo digital era ser a la vez un archivo vivo y una herramienta de comunicación profesional: escalable, fácil de actualizar con nuevos trabajos y premios, y optimizada para buscadores y mercados internacionales.",
+      "paragraph3":"El resultado es una identidad digital sobria y contemporánea que refleja su enfoque integral —diseño, innovación y dirección creativa— y muestra con claridad la solvencia y ambición del estudio.",
+      "collab1": "[[Colaboradores:]]",
+      "collab2": "[[Colaboradores:]] Sandra Yago y yo"
+    },
+    "work3":{
+      "h3":"Clínica Navarro Viana",
+      "paragraph1":"Para [[Clínica Navarro Viana]] planteamos una presencia digital que muestre su enfoque de belleza natural ligada a salud, prevención y tratamientos personalizados, respaldada por rigor médico, tecnología de vanguardia y un equipo multidisciplinar.",
+      "paragraph2":"El objetivo fue facilitar el acceso a la información sobre sus especialidades, destacar su liderazgo en procedimientos combinados y reforzar la confianza del paciente al enfatizar su quirófano totalmente equipado y su ubicación céntrica.",
+      "paragraph3":"El sitio orienta a la conversión con accesos claros a llamada a la acción, precios, proyectando una imagen cálida, experta y de confianza, coherente.",
+      "collab1": "[[Colaboradores:]]",
+      "collab2": "[[Colaboradores:]] Sandra Yago y yo"
+    },
+    "work4":{
+      "h3":"Espai Mariameta",
+      "paragraph1":"Para [[Espai Mariameta]] creamos una web cálida y empática pensada para mostrar su portfolio, explicar su filosofía y generar confianza desde la transparencia.",
+      "paragraph2":"Su objetivo digital era contar quiénes son y cómo trabajan con claridad y tono humano, favoreciendo el contacto con potenciales clientes.",
+      "paragraph3":"La plataforma favorece una navegación sencilla y visual, con proyectos presentados mediante imágenes cuidadosamente seleccionadas y textos en primera persona, tipografía amable, colores neutros y una experiencia responsive.",
+      "collab1": "[[Colaboradores:]]",
+      "collab2": "[[Colaboradores:]] Solo yo"
+    },
+    "work5":{
+      "h3":"GG Studio",
+      "paragraph1":"Para [[GG STUDIO]] diseñamos un sitio web limpio y profesional que organiza servicios, líneas de I+D y un portfolio categorizado con llamadas a la acción claras.",
+      "paragraph2":"Su objetivo digital fue consolidar una presencia alineada con su método—estrategia, innovación y respeto por el entorno—, permitir una navegación fluida para clientes y colaboradores, y reforzar el SEO en arquitectura e innovación sostenible.",
+      "paragraph3":"El resultado es una identidad digital sobria y escalable que comunica rigor técnico, visión global y carácter arquitectónico.",
+      "collab1": "[[Colaboradores:]]",
+      "collab2": "[[Colaboradores:]] Sandra Yago y yo"
+    }
+  },
+  "about":{
+    "title":"SOBRE Mí",
+    "info1":{
+      "title":"Introducción",
+      "description":"Soy un creativo curioso. Persigo el porqué de cada decisión [[ estética ]] y [[ código ]] y cómo cambia lo que sientes. Diseño para provocar un significado y programo para que sea lo más funcional y adaptado posible. Encuentro la mejor solución a cada reto."    },
+    "info2":{
+      "title":"Progresa Formación",
+      "description":"Descubrí lo interesante y creativo que puede llegar a ser tanto el mundo del diseño y de la programación y cursé un ciclo grado superior de desarrollo web."
+    },
+    "info3":{
+      "title":"Xufa Estudio",
+      "description":"Estuve de prácticas en una empresa en la cual tuve un rol centrado en la estética y la presencia digital, lo hizo querer especializarme en esa rama."
+    },
+    "info4":{
+      "title":"Herramientas",
+      "description":"React, Next.js, TypeScript, JavaScript, Tailwind CSS <br><br>Framer Motion, GSAP <br><br>WordPress + Elementor + SEO <br><br>Basic Node, PHP, Python"
+    }
+  },
+  "contact": {
+  "sentence": "Hablemos {{gif}} sobre tu proyecto",
+  "name":"Tu nombre",
+  "email":"Email",
+  "tell":"Cuéntame, ¿qué necesitas?",
+  "send":"Enviar mensaje",
+  "submitting": "Al enviar aceptas la",
+  "privacy": "Política de Privacidad",
+  "kicker" : "EMPECEMOS LA CONVERSACIÓN",
+  "line1" : "GRAN DESARROLLO",
+  "mid"   : "EMPIEZA CON",
+  "line2" : "GRAN COLABORACIÓN",
+  "thanks": "Gracias!",
+  "respuesta":"Te respondo muy pronto."
+  }
+}

@@ -1,0 +1,80 @@
+/*.stage{
+  position: relative;
+  height: var(--stage-h, 260svh); 
+  isolation: isolate;
+  overflow: visible;
+  z-index: 0;
+}
+
+
+.stage-pin{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  z-index: 1;
+  overflow: visible;
+}
+
+.stage-overlay{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  z-index: 2;        
+  pointer-events: none; 
+  will-change: transform, opacity;
+  display: grid;
+  place-items: end center; 
+  padding: 0 2vw 2vh; 
+}
+
+.stage-overlay-inner{
+  width: min(100%, 1400px);
+  height: 100%;        
+  background: #101010;  
+  position: relative;
+  pointer-events: auto; 
+  overflow: hidden;
+}
+
+.stage-hold{
+  height: var(--hold-h, 40svh);
+}
+ Pausa a pantalla completa: añade recorrido bajo la overlay al final */
+.stage{
+  position: relative;
+  height: calc(var(--stage-h, 240svh) + var(--hold-h, 0svh));
+  isolation: isolate;
+  overflow: visible;
+  z-index: 0;
+}
+
+/* Sección actual fijada */
+.stage-pin{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* Overlay que sube por encima */
+.stage-overlay{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  z-index: 2;           /* por encima del bg */
+  pointer-events: auto; /* interactuable mientras está visible */
+  will-change: transform, opacity;
+}
+
+.stage-overlay-inner{
+  min-height: 100%;
+  width: 100%;
+  /* Fondo sólido para tapar completamente lo de debajo */
+  background: #101010;  /* se sobreescribe desde prop overlayBg */
+}
+
+/* Retención a pantalla completa: consume scroll y evita que “salte” */
+.stage-hold{
+  height: var(--hold-h, 0svh);
+}

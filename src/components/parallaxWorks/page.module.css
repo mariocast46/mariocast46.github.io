@@ -1,0 +1,90 @@
+.main{
+  background: var(--bg);
+  min-height:100%;
+  height: 100%;
+}
+
+/* SECCIÓN “PINNED” */
+.wrap{
+  position: relative;        /* altura se marca inline (svh) desde el componente */
+  background: var(--bg);
+}
+
+.stage{
+  position: relative;
+  /* Opcional: para snapping de la pantalla a esta sección concreta */
+  scroll-snap-align: start;     /* si usas scroll-snap en el contenedor padre */
+  background: var(--bg, #0f0f0f);
+}
+
+.pin{
+  position: sticky;
+  top: 0;
+  height: 100vh;               /* pantalla fija mientras se anima */
+  display: grid;
+  place-items: center;
+  overflow: hidden;            /* oculta el excedente mientras mueven las columnas */
+}
+
+/* Grid de 4 columnas */
+.gallery{
+  width: min(1400px, 95vw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2vw;
+  align-items: stretch;
+
+}
+
+.colWrap{
+  /* solo sirve de contenedor para medir scrollHeight */
+  height: auto;
+}
+
+.column{
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vw;
+  will-change: transform;
+}
+
+/* Las que suben deben mostrar primero el final de la columna */
+.reverse{
+  flex-direction: column-reverse; /* magia: ves el “final” al principio */
+}
+
+/* Tarjeta base */
+.card{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Ratios */
+.tall   { aspect-ratio: 11 / 30; }
+.mid    { aspect-ratio: 12 / 26; }
+.square { aspect-ratio: 1 / 1; }
+
+/* Imagen */
+.img{
+  object-fit: cover;
+  object-position: center;
+}
+
+/* (Opcional) scroll-snap global en la página para “enganchar” esta sección */
+html, body{
+  /* si quieres snap entre secciones de todo el site:
+  scroll-snap-type: y mandatory;
+  */
+}
+
+/* Responsive menor */
+@media (max-width: 980px){
+  .gallery{ gap: 3.5vw; }
+  .column{ min-width: 46vw; }
+}
+
+@media (max-width: 640px){
+  .column{ min-width: 82vw; }
+}

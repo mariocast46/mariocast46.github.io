@@ -1,0 +1,200 @@
+:root{
+  --bg: #101010;
+  --ink: #dddddd;
+  --muted: #a5a5a5;
+  --accent: #f2ff00; /* acento pedido */
+}
+
+/* Section wrapper = alto “escénico” con ligera textura */
+.wrap{
+  position: relative;
+  background: var(--bg);
+  isolation: isolate;
+  /* retícula sutil para evitar vacío plano */
+  background-image:
+    radial-gradient(ellipse at center, rgb(16, 16, 16 ) ),
+    radial-gradient(circle at 12px 12px, rgba(255,255,255,.035) 2px, transparent 2.2px);
+  background-size: 100% 100%, 24px 24px;
+}
+
+/* Sticky viewport */
+.pin{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(18px, 4vw, 44px);
+  align-items: center;
+  padding: clamp(20px, 5vw, 56px);
+  z-index: 2;
+}
+
+/* Rail lateral izquierdo */
+.rail{
+  position: absolute;
+  inset: 0 auto 0 24px;
+  width: 2px;
+  background: rgba(255,255,255,.08);
+  z-index: 1;
+}
+.rail::after{
+  content:"";
+  position: absolute;
+  top: -12px; left: -4px;
+  width: 10px; height: 10px; border-radius: 999px;
+  background: rgba(255,255,255,.12);
+}
+.railFill{
+  position: absolute;
+  left: 0; bottom: 0; /* rellena de abajo→arriba o arriba→abajo? elegimos arriba→abajo */
+  top: 0; bottom: auto;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(
+    to bottom,
+    var(--accent) 0%,
+    #c9d000 35%,
+    #a9b300 70%,
+    #8a9600 100%
+  );
+  
+}
+
+.center{
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;         /* centra vertical y horizontal */
+  padding: clamp(20px, 5vw, 56px);
+  z-index: 2;                  /* por encima del rail y las barras */
+}
+
+/* La card ya no necesita margin-left:auto */
+.card{
+  background: #121212;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  padding: clamp(18px, 3.6vw, 36px);
+  max-width: 560px;
+  width: min(560px, 92vw);     /* que no se desborde en móviles */
+  margin: 0;                   /* centrada por grid, no por margin */
+  justify-content: center;
+}
+.title{
+  font-family: var(--font-display, system-ui);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: .95;
+  font-size: clamp(36px, 7vw, 84px);
+  color: #fff;
+}
+.accent{ color: var(--accent); }
+.copy{
+  color: var(--muted);
+  max-width: 46ch;
+}
+.meta{
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  color: #cfcfcf;
+}
+.meta li{ display: flex; gap: .6ch; }
+.meta li span{ opacity: .65; width: 88px; flex: 0 0 auto; }
+.meta a{ color: #fff; text-decoration: none; border-bottom: 1px dotted rgba(255,255,255,.25); }
+.meta a:hover{ color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Ghost word */
+.ghost{
+  position: absolute;
+  left: 8vw;
+  bottom: 14vh;
+  font-family: var(--font-display, system-ui);
+  font-weight: 900;
+  font-size: clamp(40px, 10vw, 160px);
+  line-height: .9;
+  letter-spacing: -.03em;
+  color: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Formulario con labels flotantes */
+.form{ display: grid; gap: 16px; }
+.field{
+  position: relative;
+}
+.field input,
+.field textarea{
+  width: 100%;
+  background: #0e0e0e;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  padding: 16px 14px;
+  outline: none;
+  transition: border-color .2s ease, .2s ease;
+}
+.field textarea{ resize: vertical; min-height: 120px; }
+.field input:focus,
+.field textarea:focus{
+  border-color: var(--accent);
+}
+.field label{
+  position: absolute;
+  left: 12px; top: 10px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+  background: #121212;
+  transform: translateY(-50%) scale(0.92);
+  pointer-events: none;
+  border-radius: 6px;
+}
+
+/* CTA */
+.cta{
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: .6ch;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  font-weight: 800;
+  letter-spacing: .01em;
+  padding: 14px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .15s ease, .15s ease;
+}
+.cta:hover{ transform: translateY(-1px); }
+.arrow{ width: 1.2em; height: 1.2em; }
+
+/* Mensaje OK */
+.ok{
+  text-align: center;
+  color: #fff;
+}
+.ok h3{ font-size: clamp(22px, 3vw, 32px); margin: 0 0 6px; }
+
+/* Barras horizontales decorativas */
+.hbar{
+  position: absolute;
+  left: 22vw;
+  width: 52vw;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.35), rgba(255,255,255,.08));
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 1024px){
+  .pin{ grid-template-columns: 1fr; }
+  .ghost{ left: 6vw; bottom: 10vh; }
+}
