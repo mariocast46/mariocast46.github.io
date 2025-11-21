@@ -1495,3 +1495,28 @@ html, body { margin: 0; padding: 0; }
 .olh-link{
   cursor: pointer;
 }
+@media (max-width: 768px){
+  /* HERO en móvil: sección normal, no “scroll infinito” */
+
+  .hero-pin{
+    position: relative;   /* o static, ambas valen */
+    height: auto;         /* ← CLAVE: nada de 0vh */
+  }
+
+  .hero-sticky{
+    position: static;     /* quitamos sticky en móvil */
+    top: auto;
+    min-height: auto;
+    display: block;       /* no hace falta grid para algo simple */
+  }
+
+  .olh-wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100svh;
+    gap: clamp(8px, 2.4vh, 16px);
+  }
+
+  /* …el resto de estilos móviles que ya tienes para título, foto, services, etc. los puedes dejar tal cual */
+}

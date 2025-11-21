@@ -35,7 +35,7 @@
   text-align: center;
   padding-top: 27vh;
   margin: 0;
-  z-index: 1;                 /* por encima del fondo, por debajo de UI si la hubiera */
+  z-index: 3;                 /* por encima del fondo, por debajo de UI si la hubiera */
   font-family: var(--font-display, system-ui);
   font-weight: 900;
   text-transform: uppercase;
@@ -119,6 +119,7 @@
 .ab-sides{
   position: absolute;
   inset: 0;
+  top:10vh;
   z-index: 1; /* por debajo del hero */
   pointer-events: none;
   overflow: visible; 
@@ -501,7 +502,7 @@
 @media (max-width: 768px) {
   .ab-wrap {
     min-height: 220svh;        /* menos “scroll infinito” en about */
-    padding-bottom: 520px;     /* recorta un poco el tail extra */
+    padding-bottom: 820px;     /* recorta un poco el tail extra */
   }
 
   .ab-title {
@@ -535,6 +536,7 @@
 }
 .ab-sidesMobile {
   display: none;
+  top:40vh;
 }
 
 /* ===== Layout mobile: tarjetas apiladas ===== */
@@ -588,5 +590,45 @@
   .ab-infoMobileTxt {
     font-size: 13px;
     line-height: 1.55;
+  }
+  /* La sección deja de ser una mega-pantalla pegajosa */
+  .ab-wrap {
+    position: relative;
+    min-height: auto;          /* fuera el 320svh */
+    padding-bottom: 0;         /* ya no necesitamos 1000px + tail enormes */
+    z-index: 0;
+  }
+
+  .ab-pin {
+    position: relative;        /* quita el sticky en móvil */
+    top: auto;
+    height: auto;
+    overflow: visible;
+    z-index: 0;
+  }
+
+  /* El “tail” que añadías con bottomSpacePx deja de alargar el scroll */
+  .ab-tail {
+    height: 0;
+  }
+}
+@media (max-width: 768px) {
+  /* Rails / barras / ghost words no hacen falta en móvil,
+     así que evitamos que interfieran */
+  .ab-overlays {
+    display: none;   /* decoraciones off en móvil */
+  }
+
+  /* Usamos la versión “tarjetas apiladas” que ya tienes */
+  .ab-sides {
+    display: none;
+  }
+
+  .ab-sidesMobile {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    padding: 6rem 6vw 3rem;
+    z-index: 1;
   }
 }
