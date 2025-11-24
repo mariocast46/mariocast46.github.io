@@ -378,60 +378,44 @@ export default function Header() {
           </div>
           {/**/}
         <nav className="drawer-nav" aria-label="Mobile">
-          <button
-    type="button"
-    className="drawer-link"
-    onClick={() => handleDrawerNav("about")}
-  >
-    {t("nav.about")} <span className="dot menu-dot">.</span>
-  </button>
+  {[
+    { id: "about",    label: t("nav.about") },
+    { id: "works",    label: t("nav.works") },
+    { id: "services", label: t("nav.services") },
+    { id: "contact",  label: t("nav.contact") },
+  ].map((item) => (
+    <button
+      key={item.id}
+      type="button"
+      className="drawer-link"
+      onClick={() => handleDrawerNav(item.id)}
+    >
+      {item.label} <span className="dot menu-dot">.</span>
+    </button>
+  ))}
 
-  <button
-    type="button"
-    className="drawer-link"
-    onClick={() => handleDrawerNav("works")}
-  >
-    {t("nav.works")} <span className="dot menu-dot">.</span>
-  </button>
-
-  <button
-    type="button"
-    className="drawer-link"
-    onClick={() => handleDrawerNav("contact")}
-  >
-    {t("nav.contact")} <span className="dot menu-dot">.</span>
-  </button>
-
-          {/* ⬇️ Idioma con la MISMA tipografía */}
-            <div className="drawer-lang">
-            <div className="lang-inline">
-                <span className="lang-current">
-                <span className="olh-word">{useLang().toUpperCase()}</span>
-                <span className="dot current-dot">.</span>
-                </span>
-                <span className="sep">/&nbsp;</span>
-              <button
-                type="button"
-                className="other"
-                onClick={() => {
-                  const cur = useLang() === "en" ? "es" : "en";
-                // reutiliza tu switchTo original:
-                // (opción rápida) dispara un click al LangMenu existente,
-                // (opción limpia) copia la función switchTo aquí.
-                // Si ya tienes switchTo arriba, llámala:
-                // switchTo(cur);
-                // ⚠️ si no expones switchTo, cambia a:
-                  window.location.href = `/${cur}`;
-                }}
-              >
-                <span className="olh-word">
-                  {useLang() === "en" ? "ES" : "EN"}
-                </span>
-                <span className="dot hover-dot">.</span>
-                </button>
-              </div>
-            </div>
-            </nav>
+  {/* Idioma, lo puedes dejar como lo tenías */}
+  <div className="drawer-lang">
+    <div className="lang-inline">
+      <span className="lang-current">
+        <span className="olh-word">{lang.toUpperCase()}</span>
+        <span className="dot current-dot">.</span>
+      </span>
+      <span className="sep">/&nbsp;</span>
+      <button
+        type="button"
+        className="other"
+        onClick={() => {
+          const next = lang === "en" ? "es" : "en";
+          window.location.href = `/${next}`;
+        }}
+      >
+        <span className="olh-word">{lang === "en" ? "ES" : "EN"}</span>
+        <span className="dot hover-dot">.</span>
+      </button>
+    </div>
+  </div>
+</nav>
           </motion.aside>
         )}
       </AnimatePresence>

@@ -1084,9 +1084,18 @@ html, body { margin: 0; padding: 0; }
     align-items: center;
     gap: 6px;
     text-decoration: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
   }
-
-
+  .drawer-link:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
   .drawer-lang{
     margin-top: clamp(12px, 4vw, 20px);
     opacity: .85;
