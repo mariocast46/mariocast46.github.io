@@ -291,6 +291,15 @@ export default function Header() {
       router.push(`${homePath}#${id}`);
     }
   }
+  function handleDrawerNav(id) {
+    // id será "about" | "works" | "services" | "contact"
+    setOpen(false);      // cierra el menú
+
+    // pequeño delay para que la animación del drawer no se pelee con el scroll
+    setTimeout(() => {
+      goTo(id);
+    }, 10);
+  }
 
   // Si entras con hash (e.g. /es#works), aplica scroll con offset tras montar.
   useEffect(() => {
@@ -369,18 +378,29 @@ export default function Header() {
           </div>
           {/**/}
         <nav className="drawer-nav" aria-label="Mobile">
-          <LangLink href="/about" onClick={() => setOpen(false)} className="drawer-link">
-            {t("nav.about")} <span className="dot menu-dot">.</span>
-          </LangLink>
-          <LangLink href="/works" onClick={() => setOpen(false)} className="drawer-link">
-            {t("nav.works")} <span className="dot menu-dot">.</span>
-          </LangLink>
-          <LangLink href="/services" onClick={() => setOpen(false)} className="drawer-link">
-            {t("nav.services")} <span className="dot menu-dot">.</span>
-          </LangLink>
-          <LangLink href="/contact" onClick={() => setOpen(false)} className="drawer-link">
-            {t("nav.contact")} <span className="dot menu-dot">.</span>
-          </LangLink>
+          <button
+    type="button"
+    className="drawer-link"
+    onClick={() => handleDrawerNav("about")}
+  >
+    {t("nav.about")} <span className="dot menu-dot">.</span>
+  </button>
+
+  <button
+    type="button"
+    className="drawer-link"
+    onClick={() => handleDrawerNav("works")}
+  >
+    {t("nav.works")} <span className="dot menu-dot">.</span>
+  </button>
+
+  <button
+    type="button"
+    className="drawer-link"
+    onClick={() => handleDrawerNav("contact")}
+  >
+    {t("nav.contact")} <span className="dot menu-dot">.</span>
+  </button>
 
           {/* ⬇️ Idioma con la MISMA tipografía */}
             <div className="drawer-lang">
