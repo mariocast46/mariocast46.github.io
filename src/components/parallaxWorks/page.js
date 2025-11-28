@@ -80,26 +80,34 @@ export default function ParallaxWorks() {
   const [overflows, setOverflows] = useState(() => Array(columns.length).fill(0));
 
   useEffect(() => {
-    const measure = () => {
-      const pinH = pinRef.current?.clientHeight ?? 0;
-      const arr = colRefs.current.map((r) => {
-        const el = r.wrap;
-        if (!el) return 0;
-        const overflow = Math.max(0, el.scrollHeight - pinH);
-        return overflow;
-      });
-      setOverflows(arr);
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    if (pinRef.current) ro.observe(pinRef.current);
-    colRefs.current.forEach((r) => r.wrap && ro.observe(r.wrap));
-    window.addEventListener("resize", measure, { passive: true });
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, []);
+  const measure = () => {
+    const pinH = pinRef.current?.clientHeight ?? 0;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    const arr = colRefs.current.map((r) => {
+      const el = r.wrap;
+      if (!el) return 0;
+
+      // ✅ en móvil la “ventana” visible es la altura del propio colWrap (mitad de pantalla)
+      const viewH = isMobile ? el.clientHeight : pinH;
+
+      return Math.max(0, el.scrollHeight - viewH);
+    });
+
+    setOverflows(arr);
+  };
+
+  measure();
+  const ro = new ResizeObserver(measure);
+  if (pinRef.current) ro.observe(pinRef.current);
+  colRefs.current.forEach((r) => r.wrap && ro.observe(r.wrap));
+  window.addEventListener("resize", measure, { passive: true });
+
+  return () => {
+    ro.disconnect();
+    window.removeEventListener("resize", measure);
+  };
+}, []);
 
   // Transforms por columna: pares suben (y muestran el final primero), impares bajan
   const yCols = overflows.map((ov, idx) => {

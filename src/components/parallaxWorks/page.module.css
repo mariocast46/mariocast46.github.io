@@ -88,3 +88,105 @@ html, body{
 @media (max-width: 640px){
   .column{ min-width: 82vw; }
 }
+
+/* ✅ evita overflow horizontal en general */
+.stage { overflow-x: clip; }
+.gallery { overflow-x: clip; }
+
+/* 🔥 IMPORTANTE: en grid, NO uses min-width en .column */
+.column{ min-width: 0; }
+
+/* Desktop / tablet: 4 columnas */
+.gallery{
+  width: min(1400px, 95vw);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2vw;
+}
+
+/* ====== MOBILE ====== */
+@media (max-width: 768px){
+  .pin{
+    height: 100svh;          /* mejor en móvil que 100vh */
+    padding: 0 4vw;
+  }
+
+  /* 2x2: se ven las 4 “columnas” a la vez */
+  .gallery{
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 3.5vw;
+    align-items: stretch;
+  }
+
+  /* cada columna ocupa su celda, sin empujar */
+  .colWrap{ width: 100%; }
+
+  .column{
+    gap: 3vw;
+  }
+
+  /* ajusta ratios para que sean más “amables” en tarjetas pequeñas */
+  .tall   { aspect-ratio: 3 / 5; }
+  .mid    { aspect-ratio: 3 / 4; }
+  .square { aspect-ratio: 1 / 1; }
+}
+
+/* quita tus reglas antiguas que meten min-width en móvil */
+@media (max-width: 980px){
+  .column{ min-width: 0 !important; }
+}
+@media (max-width: 640px){
+  .column{ min-width: 0 !important; }
+}
+
+.pin { height: 100svh; overflow: hidden; }
+.gallery { height: 100%; }
+
+@media (max-width: 768px){
+  .gallery{
+    /* 2 columnas */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* 2 filas iguales (clave) */
+    grid-auto-rows: minmax(0, 1fr);
+    /* que el grid ocupe el alto del pin */
+    height: 100%;
+  }
+  .colWrap{
+    /* clave: permite que el item se “encaje” y no empuje el grid */
+    min-height: 0;
+    overflow: hidden;
+    /* esta altura la setea JS con style="--cell-h:..." */
+    height: 50dvh;              
+  }
+  /* tus reglas antiguas de min-width rompen el grid 2x2 */
+  .column{
+    min-width: 0 !important;
+  }
+}
+@media (max-width: 980px){ .column{ min-width: 46vw; } }
+@media (max-width: 640px){ .column{ min-width: 82vw; } }
+@media (max-width: 768px){
+  .pin{
+    height: 100dvh;            /* mejor en móvil */
+  }
+
+  .gallery{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(10px, 3.5vw, 18px);
+    height: 100%;
+    grid-auto-rows: minmax(0, 1fr);
+  }
+
+  .colWrap{
+    min-height: 0;
+    overflow: hidden;
+    height: 50dvh;              
+  }
+
+  /* Anula tus min-width responsive que rompen el grid */
+  .column{
+    min-width: 0 !important;
+  }
+}

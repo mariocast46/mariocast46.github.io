@@ -500,15 +500,41 @@
 
 /* ===== Ajustes móviles generales ===== */
 @media (max-width: 768px) {
-  .ab-wrap {
-    min-height: 220svh;        /* menos “scroll infinito” en about */
-    padding-bottom: 820px;     /* recorta un poco el tail extra */
+  
+  .ab-wrap{
+    min-height: auto !important;
+    padding-bottom: 325 !important;   /* 👈 elimina el extra */
+    margin-bottom: 0 !important;
+  }
+
+  .ab-tail{
+    height: 0 !important;           /* 👈 por si bottomSpacePx mete cola */
+    padding: 0 !important;
+    margin: 0 !important;
+    display: none !important;       /* opcional, pero asegura que no aporte nada */
   }
 
   .ab-title {
     padding-top: 20vh;
     font-size: clamp(32px, 10vw, 56px);  /* baja tamaño en pantallas pequeñas */
     line-height: 1;
+  }
+
+  /* ✅ FIX CLAVE: reset del margin default de <figure> */
+  .ab-leafMobile{
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+     justify-items: center; 
+  }
+  .ab-sideFrameMobile,
+  .ab-infoMobile{
+    width: min(82vw, 420px);
+    max-width: calc(100vw - 12vw); /* ✅ evita pasarse en pantallas muy pequeñas */
+    box-sizing: border-box;
+    margin-inline: auto;           /* ✅ centra el bloque */
   }
 
   .ab-hero {
@@ -632,3 +658,43 @@
     z-index: 1;
   }
 }
+@media (max-width: 768px){
+
+  /* 1) El contenedor mobile: alineado a la izquierda y mismo gutter que el hero */
+  .ab-sidesMobile{
+    padding: calc(80vh + 16px) 6vw 3rem; /* sigue empezando después del hero */
+    justify-items: start;               /* ⬅️ ya no centra */
+    gap: 22px;
+  }
+
+  /* 2) Cada “card” a la izquierda */
+  .ab-leafMobile{
+    justify-items: start;               /* ⬅️ ya no centra */
+    width: 100%;
+  }
+
+  /* 3) Frame de imagen más pequeño y sin exceder ancho */
+  .ab-sideFrameMobile{
+    width: min(62vw, 280px);            /* ⬅️ más pequeño */
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  /* 4) Texto alineado a la izquierda y con el MISMO ancho que la imagen */
+  .ab-infoMobile{
+    width: min(62vw, 280px);            /* ⬅️ mismo ancho que el frame */
+    text-align: start;
+  }
+
+  /* 5) Tipos un pelín más compactos */
+  .ab-infoMobileTitle{
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .ab-infoMobileTxt{
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+}
+.ab-sidesMobile{ padding: calc(0vh + 16px) 6vw 3rem; }

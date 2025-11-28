@@ -198,3 +198,35 @@
   .pin{ grid-template-columns: 1fr; }
   .ghost{ left: 6vw; bottom: 10vh; }
 }
+@media (max-width: 768px){
+  /* el “espacio extra” venía de aquí */
+  .center{
+    position: relative;      /* antes: sticky */
+    top: auto;
+    height: auto;            /* antes: 100svh */
+    min-height: 0;
+    padding: 20px 16px;      /* menos aire vertical */
+    place-items: stretch;    /* evita centrado vertical que “crea” aire */
+  }
+
+  /* asegura que la card no añade margen raro */
+  .card{
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  /* por si el section hereda márgenes de algún reset */
+  .wrap{
+    margin: 0;
+    padding: 0;              /* el padding ya lo controla .center */
+  }
+  .wrap{
+    padding-bottom: clamp(48px, 10vh, 140px);
+  }
+
+  /* (opcional) un pelín más de aire dentro también */
+  .center{
+    padding-bottom: clamp(28px, 7vh, 110px);
+  }
+}
