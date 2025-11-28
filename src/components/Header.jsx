@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useLayoutEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import LangLink, { SLUGS } from "./LangLink";
 import { runScrambleOnce } from "../lib/scrambleText";
@@ -218,7 +219,29 @@ export default function Header() {
   const onHome = /^\/(?:en|es)?\/?$/.test(pathname);
   const homePath = `/${lang}`;
   const HEADER_OFFSET = 80;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
+  useLayoutEffect(() => {
+  const el = ref.current;
+  if (!el) return;
+
+  const apply = () => {
+    const h = Math.ceil(el.getBoundingClientRect().height || 72);
+    document.documentElement.style.setProperty("--header-h", `${h}px`);
+  };
+
+  apply();
+  const ro = new ResizeObserver(apply);
+  ro.observe(el);
+  window.addEventListener("resize", apply, { passive: true });
+
+  return () => {
+    ro.disconnect();
+    window.removeEventListener("resize", apply);
+  };
+  }, []);
+  
   const wrap = {
     hidden: { opacity: 0, y: 18 },
     show: {
@@ -280,7 +303,7 @@ export default function Header() {
     return () => (document.body.style.overflow = "");
   }, [open]);
 
-  function goTo(id) {
+  {/*function goTo(id) {
     // id: "about" | "works" | "services" | "contact"
     if (!id) return;
     if (onHome) {
@@ -290,7 +313,15 @@ export default function Header() {
       // navega a la home del idioma con hash (fallback)
       router.push(`${homePath}#${id}`);
     }
-  }
+  }*/}
+  function goTo(id) {
+  if (!id) return;
+  const offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || HEADER_OFFSET;
+
+  if (onHome) scrollToSection(id, offset);
+  else router.push(`${homePath}#${id}`);
+  } 
+
   function handleDrawerNav(id) {
     // id será "about" | "works" | "services" | "contact"
     setOpen(false);      // cierra el menú
@@ -347,80 +378,92 @@ export default function Header() {
           </button>
         </div>
       </div>
+     {mounted &&
+      createPortal(
+        <AnimatePresence>
+          {open && (
+            <>
+              <motion.div
+                className="olh-scrim"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setOpen(false)}
+              />
 
-      {/* Drawer mobile */}
-      <AnimatePresence>
-        {open && (
-          <motion.aside
-            className="olh-drawer"
-            initial={{ x: "100%", opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "100%", opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-          <div className="drawer-head">
-        {/* ⬇️ Logo ahora arriba-izquierda */}
-            <div className="drawer-brand">
-              <span className="olh-word">MARIO</span>
-              <span className="dot">◯</span><br />
-              <span className="olh-word">&nbsp;CAST</span>
-              <span className="dot">.</span>
-            </div>
+              <motion.aside
+                className="olh-drawer"
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              >
+              <div className="drawer-shell">
+                <button
+                    type="button"
+                    aria-label="Close menu"
+                    className="drawer-close"
+                    onClick={() => setOpen(false)}
+                >     ✕
+                </button>              
+                <div className="drawer-head">
+                  <div className="drawer-brand">
+                    <span className="olh-word">MARIO</span>
+                    <span className="dot">◯</span>
+                    <br />
+                    <span className="olh-word">&nbsp;CAST</span>
+                    <span className="dot">.</span>
+                  </div>
+                </div>
 
-        {/* ⬇️ Cerrar arriba-derecha */}
-            <button
-              type="button"
-              aria-label="Close menu"
-              className="drawer-close"
-              onClick={toggle}
-            >
-            </button>
-          </div>
-          {/**/}
-        <nav className="drawer-nav" aria-label="Mobile">
-  {[
-    { id: "about",    label: t("nav.about") },
-    { id: "works",    label: t("nav.works") },
-    { id: "services", label: t("nav.services") },
-    { id: "contact",  label: t("nav.contact") },
-  ].map((item) => (
-    <button
-      key={item.id}
-      type="button"
-      className="drawer-link"
-      onClick={() => handleDrawerNav(item.id)}
-    >
-      {item.label} <span className="dot menu-dot">.</span>
-    </button>
-  ))}
+                <nav className="drawer-nav" aria-label="Mobile">
+                  {[
+                    { id: "about", label: t("nav.about") },
+                    { id: "works", label: t("nav.works") },
+                    { id: "contact", label: t("nav.contact") },
+                  ].map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className="drawer-link"
+                      onClick={() => handleDrawerNav(item.id)}
+                    >
+                      {item.label} <span className="dot menu-dot">.</span>
+                    </button>
+                  ))}
 
-  {/* Idioma, lo puedes dejar como lo tenías */}
-  <div className="drawer-lang">
-    <div className="lang-inline">
-      <span className="lang-current">
-        <span className="olh-word">{lang.toUpperCase()}</span>
-        <span className="dot current-dot">.</span>
-      </span>
-      <span className="sep">/&nbsp;</span>
-      <button
-        type="button"
-        className="other"
-        onClick={() => {
-          const next = lang === "en" ? "es" : "en";
-          window.location.href = `/${next}`;
-        }}
-      >
-        <span className="olh-word">{lang === "en" ? "ES" : "EN"}</span>
-        <span className="dot hover-dot">.</span>
-      </button>
-    </div>
-  </div>
-</nav>
-          </motion.aside>
-        )}
-      </AnimatePresence>
+                  <div className="drawer-lang">
+                    <div className="lang-inline">
+                      <span className="lang-current">
+                        <span className="olh-word">{lang.toUpperCase()}</span>
+                        <span className="dot current-dot">.</span>
+                      </span>
 
+                      <span className="sep">/&nbsp;</span>
 
+                      <button
+                        type="button"
+                        className="other"
+                        onClick={() => {
+                          const next = lang === "en" ? "es" : "en";
+                          window.location.href = `/${next}`;
+                        }}
+                      >
+                        <span className="olh-word">
+                          {lang === "en" ? "ES" : "EN"}
+                        </span>
+                        <span className="dot hover-dot">.</span>
+                      </button>
+                    </div>
+                  </div>
+                </nav>
+                </div>  
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </header>
   );
 }

@@ -1529,3 +1529,149 @@ html, body { margin: 0; padding: 0; }
 
   /* …el resto de estilos móviles que ya tienes para título, foto, services, etc. los puedes dejar tal cual */
 }
+
+
+/* ✅ móvil: header SIEMPRE visible 
+@media (max-width: 860px){
+  .olh-header{
+    top: 0; left: 0; right: 0;
+
+  }
+}
+.olh-header{
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  z-index: 10000;              
+  background: transparent;
+  pointer-events: auto;
+  isolation: isolate;         
+}*/
+
+/* ✅ El drawer debe ir por encima incluso del header */
+.olh-drawer{ z-index: 10001; }
+.olh-menu-btn{ z-index: 10002; }
+@media(max-width: 860px){
+.drawer-close{
+  position: absolute;
+  right: clamp(14px, 4vw, 24px);
+  top: clamp(10px, 3.5vw, 20px);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--fg, #fff);
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.drawer-close:hover{
+  opacity: .85;
+}
+
+.drawer-close:focus-visible{
+  outline: 2px solid var(--accent, #f2ff00);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+}
+.olh-drawer,
+.olh-drawer *{
+  mix-blend-mode: normal !important;
+}
+
+/* asegura color visible dentro del drawer */
+.olh-drawer{
+  color: #fff !important;
+}
+
+/* botón cerrar */
+.drawer-head{ position: relative; } /* por si no lo tienes */
+.drawer-close{
+  position: absolute;
+  right: 16px;
+  top: 14px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  color: #fff !important;
+  cursor: pointer;
+  z-index: 999999; /* por encima de todo dentro del drawer */
+}
+
+/* ✅ “X” garantizada aunque el botón esté vacío */
+.drawer-close::before{
+  font-size: 28px;
+  line-height: 1;
+}
+
+/* foco accesible */
+.drawer-close:focus-visible{
+  outline: 2px solid #f2ff00;
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+.olh-scrim{
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0,0,0,.45) !important;
+  z-index: 2147483000 !important;
+}
+
+.olh-drawer{
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  height: 100dvh !important;
+  width: min(84vw, 360px) !important;
+  background: #111 !important;
+  color: #fff !important;
+  z-index: 2147483001 !important;
+  isolation: isolate !important;   /* stacking context limpio */
+  overflow: visible !important;    /* por si algo lo estaba cortando */
+}
+
+/* contenedor interno ancla */
+.drawer-shell{
+  position: relative !important;
+  height: 100% !important;
+}
+
+/* ✅ X SIEMPRE visible y por encima */
+.drawer-close{
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  z-index: 2147483002 !important;
+
+  width: 48px !important;
+  height: 48px !important;
+  display: grid !important;
+  place-items: center !important;
+
+  
+  border-radius: 12px !important;
+
+  color: #fff !important;
+  font-size: 30px !important;
+  line-height: 1 !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* evita que el blend del header “mate” el contenido del drawer */
+.olh-drawer,
+.olh-drawer *{
+  mix-blend-mode: normal !important;
+}
