@@ -698,3 +698,19 @@
   }
 }
 .ab-sidesMobile{ padding: calc(0vh + 16px) 6vw 3rem; }
+
+@media (max-width: 768px){
+
+  /* Si hay overflow horizontal, TODO se ve “descentrado” */
+  html, body{ overflow-x: clip; }
+  .ab-wrap, .ab-pin{ overflow-x: clip; }
+
+  /* HERO: márgenes idénticos en ambos lados */
+  .ab-hero{
+    top: 16svh !important;
+    bottom: auto !important;
+    /* 🔥 esto fuerza el mismo margen en izquierda/derecha */
+    inset-inline: 3vw !important;     /* = left/right */
+    left: auto !important;
+  }
+}
