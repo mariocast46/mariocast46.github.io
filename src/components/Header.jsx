@@ -408,7 +408,7 @@ export default function Header() {
                 </button>              
                 <div className="drawer-head">
                   <div className="drawer-brand">
-                    <span className="olh-word">MARIO</span>
+                    <span className="olh-word">MARI</span>
                     <span className="dot">◯</span>
                     <br />
                     <span className="olh-word">&nbsp;CAST</span>

@@ -9,6 +9,7 @@ import PixelImage from "../PixelImage";
 import OverlayHud from "./OverlayHud";
 import HudCaption from "./HudCaption";
 import { useEffectEvent } from "react";
+import { createPortal } from "react-dom";
 import ReactiveParagraph from "../ReactiveParagraph";
 
 const IMAGES = [
@@ -152,7 +153,7 @@ function Card({ img, i, attachRef, hiresOpacity }) {
 
   return (
     <div className={`${s.item} ${s[`w${i + 1}`]}`}>
-      {img.url ? (
+      {/*{img.url ? (
         <a
           href={img.url}
           target="_blank"
@@ -164,7 +165,8 @@ function Card({ img, i, attachRef, hiresOpacity }) {
         </a>
       ) : (
         inner
-      )}
+      )}*/}
+      {inner}
     </div>
   );
 }
@@ -705,15 +707,13 @@ useEffect(() => {
   const hudPanelSide = (panelIdx === 0) ? ((0 % 2 === 0) ? "right" : "left"): spPanel.side;*/
   const hudPanelOpen = (hudIdx === 0) ? w4Open : !!spPanel.open;
   const hudPanelSide = (hudIdx === 0) ? w4Side : (spPanel.side || "left");
-
-  
-
   // cierra panel w4 al cambiar de imagen central
   useEffect(() => { setPanelIdx(null); }, [hudBase]);
 
   const hudOpacity = useTransform(scrollYProgress, [0.70, 0.75], [0, 1]);
   const showHud = inZoomPlateau || inShowcase;
   const hudMeta = useMemo(() => ITEMS[hudIdx] ?? {}, [hudIdx]);
+  
   
   function rich(str = "") {
   const html = String(str).replace(
@@ -748,6 +748,39 @@ useEffect(() => {
             <span className={s.zoomCapR}>{ITEMS[0].year}</span>
           </div>
         )}
+        {inZoomPlateau && hudIdx === 0 && panelIdx === 0 && (
+        <aside className={`${s.w4SidePanel} ${s.open}`} role="dialog" aria-modal="true">
+          <button
+            className={s.w4Close}
+            onClick={() => setPanelIdx(null)}
+            aria-label="Close"
+            type="button"
+          >
+            ×
+          </button>
+
+          <div className={s.w4InnerCentered}>
+            <h3 className={s.w4Title}>{t("works.work1.h3")}</h3>
+
+            <p className={s.w4P} dangerouslySetInnerHTML={rich(t("works.work1.paragraph1"))} />
+            <p className={s.w4P} dangerouslySetInnerHTML={rich(t("works.work1.paragraph2"))} />
+            <p className={s.w4P} dangerouslySetInnerHTML={rich(t("works.work1.paragraph3"))} />
+
+            <ReactiveParagraph
+              baseText={t("works.work1.collab1")}
+              altText={t("works.work1.collab2")}
+              className={s.w4P}
+              diameter={200}
+            />
+
+            {ITEMS[0].url && (
+              <a className={s.w4Link} href={ITEMS[0].url} target="_blank" rel="noopener noreferrer">
+                {t("works.site")}
+              </a>
+            )}
+          </div>
+        </aside>
+      )}
       </div>
     </section>
     {/* ===== 2) HUD FIJO (no pertenece al pinned): no interfiere con scroll ===== */}

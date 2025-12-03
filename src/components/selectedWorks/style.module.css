@@ -876,6 +876,22 @@
   align-content: end;
 }
 .spLink:hover{ border-bottom-color: var(--accent); }
+.spLink{
+  display: inline-block;
+  width: fit-content;
+  height: auto;
+  margin-top: 14px;
+
+  color: var(--accent);
+  text-decoration: none;
+
+  /* subrayado SOLO del ancho del texto */
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  padding-bottom: 2px;
+}
 
 .spClose{
   position: absolute;
@@ -1156,4 +1172,172 @@
   transform: translateZ(0);
   filter: brightness(1.02);
   cursor: pointer;
+}
+.hudDetailsPanel{
+  position: absolute;
+  inset: 0;                       /* mismo tamaño exacto que la imagen */
+  z-index: 12;                    /* por encima del hitbox (6) y CTA */
+  pointer-events: auto;
+  background: rgba(0,0,0,.58);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+}
+
+.hudDetailsPanel.left{ justify-content: flex-start; }
+.hudDetailsPanel.right{ justify-content: flex-end; }
+
+.hudDetailsInner{
+  width: min(46ch, 92%);
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.hudDetailsClose{
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 0;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.hudDetailsTitle{
+  margin: 0;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 600;
+}
+
+.hudDetailsP{
+  margin: 0;
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.55;
+  opacity: .96;
+}
+
+.hudDetailsLink{
+  margin-top: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.hudDetailsLink:hover{ border-bottom-color: var(--accent); }
+
+.w4SidePanel{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+
+  width: min(50vw, 560px);
+  background: rgba(0,0,0,.56);
+  backdrop-filter: blur(2px);
+  color: #fff;
+
+  display: grid;
+  align-content: center;
+  pointer-events: auto;
+
+  /* por encima del stage/fondo, por debajo del OverlayHud (que va a 1000) */
+  z-index: 950;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(6%);
+  transition: opacity .22s ease, visibility .22s ease,
+              transform .32s cubic-bezier(.22,.61,.36,1);
+}
+
+.open{
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.w4Close{
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 0;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.w4InnerCentered{
+  padding: clamp(16px, 3vw, 36px);
+  display: grid;
+  gap: clamp(8px, 1vw, 14px);
+  max-width: 46ch;
+  margin-inline: auto;
+  text-align: start;
+}
+
+.w4Title{
+  margin: 0 0 .25rem 0;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 600;
+}
+
+.w4P{
+  margin: 0;
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.55;
+  opacity: .96;
+  letter-spacing: .01em;
+}
+
+.w4Link{
+  margin-top: 14px;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.w4Link:hover{ border-bottom-color: var(--accent); }
+
+/* Móvil: igual que tus panels del showcase -> bottom sheet */
+@media (max-width: 640px){
+  .w4SidePanel{
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 66svh;
+    top: auto;
+    bottom: 0;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    transform: translateY(10%);
+  }
+  .open{ transform: translateY(0); }
+}
+.spLink{
+  display: inline-block;          /* NO se estira a todo el ancho */
+  width: fit-content;             /* el ancho = texto */
+  justify-self: start;            /* evita stretch en grids */
+  align-self: start;
+
+  color: var(--accent);
+  text-decoration: none;
+
+  border-bottom: 1px solid transparent; /* base */
+  padding-bottom: 2px;
+
+  /* QUITA esto si lo tenías: height/align-content */
+  height: auto;
+  align-content: initial;
+}
+
+.spLink:hover,
+.spLink:focus-visible{
+  border-bottom-color: var(--accent);   /* subrayado solo bajo el texto */
 }

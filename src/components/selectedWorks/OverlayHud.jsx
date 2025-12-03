@@ -6,6 +6,8 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useT } from "../../app/providers/DictProvider";
 import s from "./style.module.css";
+import ReactiveParagraph from "../ReactiveParagraph";
+
 
 export default function OverlayHud({
   show,
@@ -70,7 +72,10 @@ export default function OverlayHud({
       }
     });
   }
-
+  function rich(str = "") {
+    const html = String(str).replace(/\[\[(.+?)\]\]/g, '<span class="accentZoom">$1</span>');
+    return { __html: html };
+  } 
   const onEnterHit = (e) => {
     hideRingsOnce();
     if (!moRef.current && typeof MutationObserver !== "undefined") {
@@ -195,6 +200,7 @@ export default function OverlayHud({
       >
         {panelOpen ? (ctaOffLabel ?? t("works.detailsoff")) : t("works.details")}
       </button>
+      
     </div>
   </div>
   {/* Preload invisible */}
