@@ -1320,7 +1320,7 @@
   }
   .open{ transform: translateY(0); }
 }
-.spLink{
+.w4Link{
   display: inline-block;          /* NO se estira a todo el ancho */
   width: fit-content;             /* el ancho = texto */
   justify-self: start;            /* evita stretch en grids */
