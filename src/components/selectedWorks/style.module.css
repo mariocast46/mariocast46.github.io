@@ -1341,3 +1341,21 @@
 .spLink:focus-visible{
   border-bottom-color: var(--accent);   /* subrayado solo bajo el texto */
 }
+/* ✅ Visually hidden PERO presente en DOM (no display:none) */
+.seoH3List{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+/* (opcional) si quieres distinguirlos en devtools */
+.seoH3{
+  margin: 0;
+  font-size: 1px;
+  line-height: 1px;
+}

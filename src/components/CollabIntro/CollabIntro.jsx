@@ -23,17 +23,17 @@ export default function CollabIntro({
         {t("contact.kicker")}
       </motion.p>
 
-      <motion.h2 id="collab-title" className={s.big} style={{ opacity: o, y: y1 }}>
+      <motion.h5 id="collab-title" className={s.big} style={{ opacity: o, y: y1 }}>
         {t("contact.line1")}
-      </motion.h2>
+      </motion.h5>
 
       <motion.p className={s.mid} style={{ opacity: o }}>
         {t("contact.mid")}
       </motion.p>
 
-      <motion.h3 className={s.big2} style={{ opacity: o, y: y2 }}>
+      <motion.h5 className={s.big2} style={{ opacity: o, y: y2 }}>
         {t("contact.line2")}
-      </motion.h3>
+      </motion.h5>
     </section>
   );
 }

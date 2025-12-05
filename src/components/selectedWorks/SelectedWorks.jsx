@@ -729,7 +729,14 @@ useEffect(() => {
     <section ref={travelRef} className={s.travel}>
       <div ref={pinRef} className={s.pin}>
         <motion.div ref={stageRef} className={s.stage} style={{ x: tx, y: ty, scale }}>
-          <h1 className={s.gridTitle}>{t("works.title")}</h1>
+          <h2 className={s.gridTitle}>{t("works.title")}</h2>
+          <div className={s.seoH3List}>
+            {ITEMS.map((_, idx) => (
+            <h3 key={`work-h3-${idx}`} className={s.seoH3}>
+              {t(`works.work${idx + 1}.h3`)}
+            </h3>
+            ))}
+          </div>
           <div className={s.grid}>
             {IMAGES.map((img, i) => (
               <Card

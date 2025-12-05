@@ -280,12 +280,12 @@ const LETTERS = lang === "es"
           </div>
 
           {/* rol: subtítulo de la foto */}
-        <motion.p
+        <motion.h3
           className="olh-role"
           aria-label="Role"
           variants={maskIn}>
           <span className="role-left">{t("hero.job1")}</span> <span className="dot">.</span>
-          <span className="role-right">{t("hero.job2")}</span></motion.p>
+          <span className="role-right">{t("hero.job2")}</span></motion.h3>
         </div>
         {/* Servicios en columna; animamos sólo 2º y 3º */}
           <motion.ul className="olh-services" variants={item} id="services" transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>

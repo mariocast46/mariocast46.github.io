@@ -315,9 +315,9 @@ export default function AboutSectionFull({ bottomSpacePx = 1600 }) {
         ></motion.div>
 
         {/* TÍTULO con blend */}
-        <motion.h1 className="ab-title" style={{ opacity: titleOpacity }}>
+        <motion.h2 className="ab-title" style={{ opacity: titleOpacity }}>
           {t("about.title")}
-        </motion.h1>
+        </motion.h2>
 
         {/* IMÁGENES LATERALES: nacen centradas DETRÁS y se abren */}
         <div className="ab-sides" aria-hidden>
@@ -416,9 +416,9 @@ export default function AboutSectionFull({ bottomSpacePx = 1600 }) {
                     className="ab-info"
                     style={{ opacity: capOpacity, y: capY }}
                   >
-                    <strong className="ab-infoTitle">
+                    <h3 className="ab-infoTitle">
                       {t(`about.${it.infoKey}.title`)}
-                    </strong>
+                    </h3>
                     <p
                       className="ab-infoTxt"
                       dangerouslySetInnerHTML={rich(
